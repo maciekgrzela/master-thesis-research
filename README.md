@@ -1,6 +1,6 @@
-BADANIA DO PRACY MAGISTERSKIEJ
+# BADANIA DO PRACY MAGISTERSKIEJ
 
-Folder zawiera konfiguracje API NodeJS oraz .NET Core dla określonych przypadków testowych:
+## Folder zawiera konfiguracje API NodeJS oraz .NET Core dla określonych przypadków testowych:
 
 - konfiguracja 1 (master-thesis-config-1):
 badanie porównawcze dotyczące wydajności api napisanych w dwóch technologiach przy wykorzystaniu różnych systemów bazodanowych
@@ -33,4 +33,3 @@ badanie porównawcze wydajności api dla analizowanych technologii po wdrożeniu
 POMYSŁY NA DODATKOWE BADANIA:
 - porównanie wydajności z wykorzystaniem klasycznej architektury 3-warstwowej a także zastosowaniem wzorca projektowego CQRS
 - zdefiniowanie własnego systemu pamięci podręcznej wewnątrz api i sprawdzenie zmiany wydajności po jego wprowadzeniu
-- 
