@@ -28,6 +28,9 @@ namespace Persistence.Migrations
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("GrossPrice")
+                        .HasColumnType("REAL");
+
                     b.Property<double>("NetPrice")
                         .HasColumnType("REAL");
 
@@ -167,6 +170,9 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Note")
                         .HasColumnType("TEXT");
 
@@ -270,7 +276,6 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("Ending")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("TableId")

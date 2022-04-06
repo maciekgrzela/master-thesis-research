@@ -19,7 +19,7 @@ namespace Domain.Models
         [Required, Range(0, Double.MaxValue)]
         public double Tax { get; set; }
         [Required]
-        public double GrossPrice => NetPrice + ((0.01 * Tax) * NetPrice);
+        public double GrossPrice { get; set; }
         public DateTime Created { get; set; }
     }
 }

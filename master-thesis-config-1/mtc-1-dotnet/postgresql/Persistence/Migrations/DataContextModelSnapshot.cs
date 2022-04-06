@@ -31,6 +31,9 @@ namespace Persistence.Migrations
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uuid");
 
+                    b.Property<double>("GrossPrice")
+                        .HasColumnType("double precision");
+
                     b.Property<double>("NetPrice")
                         .HasColumnType("double precision");
 
@@ -170,6 +173,9 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("Note")
                         .HasColumnType("text");
 
@@ -273,7 +279,6 @@ namespace Persistence.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("Ending")
-                        .IsRequired()
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("TableId")

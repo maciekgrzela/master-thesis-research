@@ -16,7 +16,6 @@ namespace Domain.Models
         [Required]
         public DateTime Beginning { get; set; }
 
-        [Required]
         public DateTime? Ending { get; set; }
     }
 }

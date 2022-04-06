@@ -29,6 +29,9 @@ namespace Persistence.Migrations
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("char(36)");
 
+                    b.Property<double>("GrossPrice")
+                        .HasColumnType("double");
+
                     b.Property<double>("NetPrice")
                         .HasColumnType("double");
 
@@ -168,6 +171,9 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Note")
                         .HasColumnType("longtext");
 
@@ -271,7 +277,6 @@ namespace Persistence.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("Ending")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("TableId")

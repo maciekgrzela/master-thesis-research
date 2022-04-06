@@ -31,6 +31,9 @@ namespace Persistence.Migrations
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<double>("GrossPrice")
+                        .HasColumnType("float");
+
                     b.Property<double>("NetPrice")
                         .HasColumnType("float");
 
@@ -170,6 +173,9 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
@@ -273,7 +279,6 @@ namespace Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Ending")
-                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("TableId")

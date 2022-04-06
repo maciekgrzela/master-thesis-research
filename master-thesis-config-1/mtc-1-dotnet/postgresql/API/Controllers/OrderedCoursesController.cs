@@ -90,7 +90,7 @@ namespace API.Controllers
             return GenerateResponse<OrderedCourse>(HttpStatusCode.NoContent, new OrderedCourse());
         }
 
-        [HttpPut("{orderedCourseId}/status")]
+        [HttpPatch("{orderedCourseId}/status")]
         public async Task<IActionResult> UpdateStatusAsync([FromRoute] Guid orderedCourseId, [FromBody] string statusName)
         {
             if(!ModelState.IsValid)
