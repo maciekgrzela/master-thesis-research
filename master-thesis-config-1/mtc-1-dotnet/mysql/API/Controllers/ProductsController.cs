@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -56,6 +57,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> SaveAsync([FromBody] SaveProductResource resource)
         {
             if (!ModelState.IsValid)
@@ -70,7 +72,9 @@ namespace API.Controllers
                 return GenerateResponse<string>(result.Status, result.Message);
             }
 
-            return GenerateResponse<Product>(HttpStatusCode.NoContent, new Product());
+            var productResource = mapper.Map<Product, SaveProductResource>(result.Type);
+
+            return GenerateResponse(HttpStatusCode.Created, productResource);
         }
 
         [HttpPut("{id}")]

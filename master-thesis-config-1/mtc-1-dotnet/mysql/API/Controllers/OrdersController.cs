@@ -4,6 +4,7 @@ using Application.Resources.Orders.Save;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,33 +28,35 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ListAsync()
         {
             var result = await ordersService.ListAsync();
 
             if (!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
             var responseBody = mapper.Map<List<Order>, List<OrderResource>>(result.Type);
 
-            return GenerateResponse<List<OrderResource>>(result.Status, responseBody);
+            return GenerateResponse(result.Status, responseBody);
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetOrderAsync(Guid id)
         {
             var result = await ordersService.GetOrderAsync(id);
 
             if (!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
             var responseBody = mapper.Map<Order, OrderResource>(result.Type);
 
-            return GenerateResponse<OrderResource>(result.Status, responseBody);
+            return GenerateResponse(result.Status, responseBody);
         }
 
         [HttpGet("tables/{id}/last-order")]
@@ -63,12 +66,12 @@ namespace API.Controllers
 
             if (!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
             var responseBody = mapper.Map<Order, OrderResource>(result.Type);
 
-            return GenerateResponse<OrderResource>(result.Status, responseBody);
+            return GenerateResponse(result.Status, responseBody);
         }
 
         [HttpGet("tables/{id}/orders")]
@@ -78,12 +81,12 @@ namespace API.Controllers
 
             if (!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
             var responseBody = mapper.Map<List<Order>, List<OrderResource>>(result.Type);
 
-            return GenerateResponse<List<OrderResource>>(result.Status, responseBody);
+            return GenerateResponse(result.Status, responseBody);
         }
 
         [HttpGet("user/{id}")]
@@ -93,12 +96,12 @@ namespace API.Controllers
 
             if (!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
             var responseBody = mapper.Map<List<Order>, List<OrderResource>>(result.Type);
 
-            return GenerateResponse<List<OrderResource>>(result.Status, responseBody);
+            return GenerateResponse(result.Status, responseBody);
         }
 
         [HttpPost]
@@ -114,10 +117,10 @@ namespace API.Controllers
 
             if (!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
-            return GenerateResponse<Order>(HttpStatusCode.NoContent, new Order());
+            return GenerateResponse(HttpStatusCode.NoContent, new Order());
         }
 
         [HttpPut("{id}")]
@@ -132,10 +135,10 @@ namespace API.Controllers
 
             if (!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
-            return GenerateResponse<Order>(HttpStatusCode.NoContent, new Order());
+            return GenerateResponse(HttpStatusCode.NoContent, new Order());
         }
         
     }

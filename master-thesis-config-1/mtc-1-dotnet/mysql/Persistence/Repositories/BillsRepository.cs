@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,15 @@ namespace Persistence.Repositories
             .Include(p => p.Order)
             .Include(p => p.OrderedCourses)
             .ToListAsync();
+        }
+
+        public IQueryable<Bill> QueryableAsync()
+        {
+            return context.Bills
+            .Include(p => p.Customer)
+            .Include(p => p.Order)
+            .Include(p => p.OrderedCourses)
+            .AsQueryable();
         }
 
         public async Task<Bill> GetBillAsync(Guid id)

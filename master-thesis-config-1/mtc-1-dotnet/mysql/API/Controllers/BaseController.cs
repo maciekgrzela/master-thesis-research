@@ -20,6 +20,8 @@ namespace API.Controllers
                     return Ok(body);
                 case HttpStatusCode.NoContent:
                     return NoContent();
+                case HttpStatusCode.Created:
+                    return Created("", body);
                 case HttpStatusCode.Forbidden:
                     return Forbid(body.ToString());
                 case HttpStatusCode.Unauthorized:

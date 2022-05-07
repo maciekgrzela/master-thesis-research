@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -88,6 +89,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] SaveCourseResource resource)
         {
             if (!ModelState.IsValid)

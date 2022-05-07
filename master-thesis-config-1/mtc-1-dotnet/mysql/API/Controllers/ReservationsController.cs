@@ -8,6 +8,7 @@ using Application.Resources.Reservation.Save;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -89,6 +90,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var result = await reservationService.Delete(id);

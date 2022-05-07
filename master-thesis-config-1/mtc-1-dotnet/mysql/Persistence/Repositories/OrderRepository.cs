@@ -51,6 +51,9 @@ namespace Persistence.Repositories
                 .ThenInclude(p => p.Status)
                 .Include(p => p.OrderedCourses)
                 .ThenInclude(p => p.Course)
+                .Include(p => p.OrderedCourses)
+                .ThenInclude(p => p.StatusEntries)
+                .ThenInclude(p => p.Status)
                 .AsSplitQuery()
                 .ToListAsync();
         }

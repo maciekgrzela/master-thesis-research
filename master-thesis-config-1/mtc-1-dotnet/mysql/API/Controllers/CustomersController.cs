@@ -8,12 +8,12 @@ using Application.Resources.Customers.Save;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
-
     public class CustomersController : BaseController
     {
         private readonly ICustomerService customerService;
@@ -24,6 +24,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync()
         {
             var result = await customerService.GetAllAsync();
@@ -39,6 +40,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAsync(Guid id)
         {
             var result = await customerService.GetAsync(id);

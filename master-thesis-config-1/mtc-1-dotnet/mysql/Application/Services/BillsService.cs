@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Application.Params;
+using Application.Resources.Bills.Get;
 using Application.Resources.Bills.Save;
 using Application.Responses;
 using Application.Services.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain.Models;
 using Persistence.Repositories.Interfaces;
 
@@ -20,8 +24,10 @@ namespace Application.Services
         private readonly IOrderedCourseRepository orderedCourseRepository;
         private readonly IStatusEntriesRepository statusEntriesRepository;
         private readonly IStatusesRepository statusesRepository;
-        public BillService(IBillRepository billRepository, IOrderedCourseRepository orderedCourseRepository, IStatusesRepository statusesRepository, IStatusEntriesRepository statusEntriesRepository, IOrderRepository orderRepository, ICustomerRepository customerRepository, IUnitOfWork unitOfWork)
+        private readonly IMapper mapper;
+        public BillService(IBillRepository billRepository, IOrderedCourseRepository orderedCourseRepository, IStatusesRepository statusesRepository, IStatusEntriesRepository statusEntriesRepository, IOrderRepository orderRepository, ICustomerRepository customerRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
+            this.mapper = mapper;
             this.orderedCourseRepository = orderedCourseRepository;
             this.orderRepository = orderRepository;
             this.customerRepository = customerRepository;
@@ -43,10 +49,13 @@ namespace Application.Services
             return new Response<Bill>(HttpStatusCode.OK, existingBill);
         }
 
-        public async Task<Response<List<Bill>>> ListAsync()
+        public async Task<Response<PagedList<Bill>>> ListAsync(PagingParams queryParams)
         {
             var bills = await billRepository.ListAsync();
-            return new Response<List<Bill>>(HttpStatusCode.OK, bills);
+
+            var pagedList = PagedList<Bill>.ToPagedList(bills, queryParams.PageNumber, queryParams.PageSize);
+
+            return new Response<PagedList<Bill>>(HttpStatusCode.OK, pagedList);
         }
         public async Task<Response<Bill>> SaveAsync(SaveBillResource bill)
         {
@@ -96,7 +105,7 @@ namespace Application.Services
             foreach (var orderedCourse in bill.OrderedCourses)
             {
                 var existingOrderedCourse = await orderedCourseRepository.GetOrderedCourseAsync(orderedCourse.Id);
-                if(existingOrderedCourse == null)
+                if (existingOrderedCourse == null)
                 {
                     return new Response<Bill>(HttpStatusCode.NotFound, $"OrderedCourse with id:{orderedCourse.Id} not found");
                 }
@@ -119,7 +128,7 @@ namespace Application.Services
         {
             var existingBill = await billRepository.GetBillAsync(id);
 
-            if(existingBill == null)
+            if (existingBill == null)
             {
                 return new Response<Bill>(HttpStatusCode.NotFound, $"Bill with id:{id} not found");
             }
@@ -144,7 +153,7 @@ namespace Application.Services
 
             var coursesForExistingBill = await orderedCourseRepository.GetCoursesForBillId(id);
 
-            foreach(var course in coursesForExistingBill)
+            foreach (var course in coursesForExistingBill)
             {
                 course.BillId = null;
                 course.BillQuantity = null;
@@ -153,10 +162,10 @@ namespace Application.Services
 
             double netPrice = 0;
 
-            foreach(var course in bill.OrderedCourses)
+            foreach (var course in bill.OrderedCourses)
             {
                 var existingOrderedCourse = await orderedCourseRepository.GetOrderedCourseAsync(course.Id);
-                if(existingOrderedCourse == null)
+                if (existingOrderedCourse == null)
                 {
                     return new Response<Bill>(HttpStatusCode.NotFound, $"OrderedCourse with id:{course.Id} not found");
                 }
@@ -189,7 +198,7 @@ namespace Application.Services
 
             var coursesForExistingBill = await orderedCourseRepository.GetCoursesForBillId(id);
 
-            foreach(var course in coursesForExistingBill)
+            foreach (var course in coursesForExistingBill)
             {
                 course.BillQuantity = null;
                 orderedCourseRepository.Update(course);

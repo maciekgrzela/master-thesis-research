@@ -8,6 +8,7 @@ using Application.Resources.ProductsCategories.Save;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -22,6 +23,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ListAsync()
         {
             var result = await productsCategoryService.ListAsync();

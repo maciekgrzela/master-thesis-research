@@ -16,6 +16,5 @@ namespace Application.Resources.Orders.Get
         public int PercentageDiscount { get; set; }
 
         public List<StatusEntryForOrderResource> StatusEntries { get; set; }
-
     }
 }

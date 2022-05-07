@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Application;
 using Application.Extensions;
+using Application.Params;
 using Application.Resources.Bills.Get;
 using Application.Resources.Bills.Save;
 using Application.Resources.OrderedCourses.Get;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -24,18 +27,19 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListAsync()
+        [AllowAnonymous]
+        public async Task<IActionResult> ListAsync([FromQuery] PagingParams queryParams)
         {
-            var result = await billService.ListAsync();
+            var result = await billService.ListAsync(queryParams);
 
             if(!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<Bill>, List<BillResource>>(result.Type);
+            var responseData = mapper.Map<PagedList<Bill>, PagedList<BillResource>>(result.Type);
 
-            return GenerateResponse<List<BillResource>>(result.Status, responseBody);
+            return GenerateResponse(result.Status, responseData);
         }
 
         [HttpGet("{id}")]
