@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Algorithms;
+using Application.Algorithms.Interfaces;
 using Application.Services;
 using Application.Services.Interfaces;
 using Domain.Models;
@@ -156,6 +158,7 @@ namespace API
             services.AddScoped<IHallRepository, HallRepository>();
             services.AddScoped<IReservationService, ReservationService>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<IAlgorithmService, AlgorithmService>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

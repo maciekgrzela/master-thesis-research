@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Algorithms.Interfaces;
 using Application.Extensions;
 using Application.Resources.Coordinate.Get;
-using Application.Resources.Coordinate.List;
 using AutoMapper;
 using Domain.Algorithms.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -23,8 +22,9 @@ namespace API.Controllers
             this.mapper = mapper;
         }
 
-        [HttpPost("road/plan")]
-        public async Task<IActionResult> RoadPlanAsync([FromBody] List<GetCoordinateResource> resource)
+        [HttpPost("road/plan/{bestResult}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RoadPlanAsync([FromBody] List<GetCoordinateResource> resource, double bestResult)
         {
             if (!ModelState.IsValid)
             {
@@ -33,16 +33,14 @@ namespace API.Controllers
 
             var coordinates = mapper.Map<List<GetCoordinateResource>, List<Coordinate>>(resource);
 
-            var result = await algorithmService.RoadPlan(coordinates);
+            var result = await algorithmService.RoadPlan(coordinates, bestResult);
             
             if (!result.Success)
             {
                 return BadRequest(result.Message);
             }
-            
-            var resultCoordinates = mapper.Map<List<Coordinate>, List<CoordinateResource>>(result.Type);
-            
-            return Ok(resultCoordinates);
+
+            return Ok(result.Type);
         }
 
     }

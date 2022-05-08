@@ -7,87 +7,81 @@ namespace Domain.Algorithms
 {
     public class Population
     {
-        public List<Road> p { get; private set; }
-        public double maxFit { get; private set; }
-        public static Random randomGenerator { get; set; }
+        public List<Road> Roads { get; private set; }
+        public double MaxFitness { get; private set; }
+        public static Random RandomGenerator { get; set; }
 
-        public Population(List<Road> l)
+        public Population(List<Road> roads)
         {
-            p = l;
-            maxFit = this.calcMaxFit();
-            randomGenerator = new Random();
+            Roads = roads;
+            MaxFitness = CalculateMaxFitness();
+            RandomGenerator = new Random();
         }
 
-        public static Population randomized(Road t, int n)
+        public static Population Randomized(Road road, int size)
         {
-            List<Road> tmp = new List<Road>();
+            var tmp = new List<Road>();
 
-            for (int i = 0; i < n; ++i)
-                tmp.Add( t.rearrange() );
+            for (var i = 0; i < size; ++i)
+                tmp.Add( road.Rearrange() );
 
             return new Population(tmp);
         }
 
-        private double calcMaxFit() => p.Max( t => t.FitnessRatio );
+        private double CalculateMaxFitness() => Roads.Max( t => t.FitnessRatio );
 
-        public Road select()
+        public Road Selection()
         {
             while (true)
             {
-                int i = randomGenerator.Next(0, Config.populationSize);
+                var index = RandomGenerator.Next(0, Config.populationSize);
 
-                if (randomGenerator.NextDouble() < p[i].FitnessRatio / maxFit)
-                    return new Road(p[i].Coordinates);
+                if (RandomGenerator.NextDouble() < Roads[index].FitnessRatio / MaxFitness)
+                    return new Road(Roads[index].Coordinates);
             }
         }
 
-        public Population genNewPop(int n)
+        public Population GenerateNewPopulation(int size)
         {
-            List<Road> p = new List<Road>();
+            var roads = new List<Road>();
 
-            for (int i = 0; i < n; ++i)
+            for (var i = 0; i < size; ++i)
             {
-                Road t = select().performCrossing( select() );
+                var road = Selection().PerformCrossing(Selection());
 
-                foreach (Coordinate c in t.Coordinates)
-                    t = t.performMutation();
+                foreach (var coord in road.Coordinates)
+                    road = road.PerformMutation();
 
-                p.Add(t);
+                roads.Add(road);
             }
 
-            return new Population(p);
+            return new Population(roads);
         }
 
-        public Population elite(int n)
+        public Population GetEliteIndividuals(int size)
         {
-            List<Road> best = new List<Road>();
-            Population tmp = new Population(p);
+            var roads = new List<Road>();
+            var tmp = new Population(Roads);
 
-            for (int i = 0; i < n; ++i)
+            for (var i = 0; i < size; ++i)
             {
-                best.Add( tmp.findBest() );
-                tmp = new Population( tmp.p.Except(best).ToList() );
+                roads.Add( tmp.FindBest() );
+                tmp = new Population( tmp.Roads.Except(roads).ToList() );
             }
 
-            return new Population(best);
+            return new Population(roads);
         }
 
-        public Road findBest()
+        public Road FindBest()
         {
-            foreach (Road t in this.p)
-            {
-                if (t.FitnessRatio == this.maxFit)
-                    return t;
-            }
-
-            return null;
+            return Roads.FirstOrDefault(t => t.FitnessRatio.CompareTo(MaxFitness) == 0);
         }
 
-        public Population evolve()
+        public Population Evolve()
         {
-            var best = elite(Config.numberOfDominantsInNextGeneration);
-            var np = genNewPop(Config.populationSize - Config.numberOfDominantsInNextGeneration);
-            return new Population( best.p.Concat(np.p).ToList() );
+            var elite = GetEliteIndividuals(Config.numberOfDominantsInNextGeneration);
+            var newPopulation = GenerateNewPopulation(Config.populationSize - Config.numberOfDominantsInNextGeneration);
+            return new Population( elite.Roads.Concat(newPopulation.Roads).ToList() );
         }
     }
 }

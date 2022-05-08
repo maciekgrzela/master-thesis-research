@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Algorithms.Interfaces;
+using Application.Resources.Algorithms;
 using Application.Responses;
 using Domain.Algorithms.Models;
 
@@ -12,7 +13,7 @@ namespace Application.Algorithms
     public class AlgorithmService : IAlgorithmService
     {
 
-        public async Task<Response<List<Coordinate>>> RoadPlan(List<Coordinate> coordinates)
+        public async Task<Response<RoadPlanResult>> RoadPlan(List<Coordinate> coordinates, double bestResult)
         {
             Config.mutationProbability = 0.01;
             Config.populationSize = Convert.ToInt32(Math.Floor(0.75*Convert.ToDouble(coordinates.Count)));
@@ -27,9 +28,13 @@ namespace Application.Algorithms
             thread.Start();
             thread.Join();
             
-            return roadPlanThread.BestCoordinates.Count == 0 ?
-                new Response<List<Coordinate>>(HttpStatusCode.InternalServerError, "Could not determine the most optimal road") :
-                new Response<List<Coordinate>>(HttpStatusCode.OK, roadPlanThread.BestCoordinates);
+            return roadPlanThread.IterationsCount == 0 || roadPlanThread.BestRoad.Distance == 0.0 ?
+                new Response<RoadPlanResult>(HttpStatusCode.InternalServerError, "Could not determine the most optimal road") :
+                new Response<RoadPlanResult>(HttpStatusCode.OK, new RoadPlanResult
+                {
+                    ResultToBestRatio = bestResult / roadPlanThread.BestRoad.Distance,
+                    IterationsCount = roadPlanThread.IterationsCount
+                });
         }
     }
 }

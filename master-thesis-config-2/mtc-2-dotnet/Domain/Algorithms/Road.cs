@@ -61,7 +61,7 @@ namespace Domain.Algorithms
             return roadString;
         }
 
-        public Road performMutation()
+        public Road PerformMutation()
         {
             var coords = new List<Coordinate>(Coordinates);
             var prob = randomGenerator.NextDouble();
@@ -82,7 +82,7 @@ namespace Domain.Algorithms
             return road;
         }
 
-        public Road performCrossing(Road road)
+        public Road PerformCrossing(Road road)
         {
             int i = randomGenerator.Next(0, road.Coordinates.Count);
             int j = randomGenerator.Next(i, road.Coordinates.Count);
@@ -100,7 +100,7 @@ namespace Domain.Algorithms
             return returnedRoad;
         }
 
-        public Road rearrange()
+        public Road Rearrange()
         {
             List<Coordinate> tmp = new List<Coordinate>(Coordinates);
             int n = tmp.Count;
@@ -108,8 +108,8 @@ namespace Domain.Algorithms
             while (n > 1)
             {
                 n--;
-                int k = randomGenerator.Next( n + 1);
-                Coordinate v = tmp[k];
+                var k = randomGenerator.Next( n + 1);
+                var v = tmp[k];
                 tmp[k] = tmp[n];
                 tmp[n] = v;
             }

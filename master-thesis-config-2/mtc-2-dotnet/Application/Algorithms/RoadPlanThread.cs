@@ -8,24 +8,26 @@ namespace Application.Algorithms
 {
     public class RoadPlanThread
     {
-        private Road bestRoad;
+        public Road BestRoad;
         private static Timer _timer;
         private bool Timeout { get; set; }
-        public List<Coordinate> Coordinates { get; set; } = new List<Coordinate>();
+        public List<Coordinate> Coordinates { get; set; } = new();
         public List<Domain.Algorithms.Models.Coordinate> BestCoordinates { get; set; }
 
-        public RoadPlanThread(List<Domain.Algorithms.Models.Coordinate> coordinates)
+        public int IterationsCount { get; private set; }
+
+        public RoadPlanThread(IEnumerable<Domain.Algorithms.Models.Coordinate> coordinates)
         {
-            bestRoad = null;
+            BestRoad = null;
             BestCoordinates = new List<Domain.Algorithms.Models.Coordinate>();
-            prepareCoordinates(coordinates);
+            PrepareCoordinates(coordinates);
             Timeout = false;
             _timer = new Timer(60000);
             _timer.Elapsed += (sender, args) => Timeout = true;
             _timer.AutoReset = false;
         }
 
-        private void prepareCoordinates(List<Domain.Algorithms.Models.Coordinate> coordinates)
+        private void PrepareCoordinates(IEnumerable<Domain.Algorithms.Models.Coordinate> coordinates)
         {
             foreach (var coordinate in coordinates)
             {
@@ -37,9 +39,10 @@ namespace Application.Algorithms
         public void Run()
         {
             var startSolution = new Road(Coordinates);
-            var population = Population.randomized(startSolution, Config.populationSize);
+            var population = Population.Randomized(startSolution, Config.populationSize);
             var better = true;
-            
+            var iterations = 0;
+
             _timer.Start();
             
             while (!Timeout)
@@ -48,40 +51,47 @@ namespace Application.Algorithms
                     SetBestRoad(population);
             
                 better = false;
-                var oldFit = population.maxFit;
+                var oldFit = population.MaxFitness;
             
-                population = population.evolve();
-                if (population.maxFit > oldFit)
+                population = population.Evolve();
+                if (population.MaxFitness > oldFit)
                     better = true;
+
+                iterations++;
             }
 
-            prepareBestRoadCoords();
+            IterationsCount = iterations;
+            PrepareBestRoadCoords();
         }
 
-        private void prepareBestRoadCoords()
+        private void PrepareBestRoadCoords()
         {
             var i = 1;
-            if (bestRoad == null)
+            if (BestRoad == null)
             {
                 return;
             }
             
-            foreach (var coord in bestRoad.Coordinates)
+            foreach (var coord in BestRoad.Coordinates)
             {
-                var bestCoord = new Domain.Algorithms.Models.Coordinate();
-                bestCoord.Latitude = coord.Latitude;
-                bestCoord.Longitude = coord.Longitude;
-                bestCoord.Address = coord.Address;
-                bestCoord.Order = i;
-                BestCoordinates.Add(bestCoord);
+                BestCoordinates.Add
+                (
+                    new Domain.Algorithms.Models.Coordinate 
+                    {
+                        Latitude = coord.Latitude,
+                        Longitude = coord.Longitude,
+                        Address = coord.Address,
+                        Order = i
+                    }
+                );
                 i++;
             }
         }
 
         private void SetBestRoad(Population p)
         {
-            var best = p.findBest();
-            bestRoad = best;
+            var best = p.FindBest();
+            BestRoad = best;
         }
     }
 }

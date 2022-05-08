@@ -1,6 +1,7 @@
 using Application.Resources.Auth;
 using Application.Resources.Bills.Get;
 using Application.Resources.Bills.Save;
+using Application.Resources.Coordinate.Get;
 using Application.Resources.Course.Get;
 using Application.Resources.Course.Save;
 using Application.Resources.CourseCategories.Save;
@@ -13,6 +14,7 @@ using Application.Resources.ProductsCategories.Save;
 using Application.Resources.Reservation.Save;
 using Application.Resources.Table.Save;
 using AutoMapper;
+using Domain.Algorithms.Models;
 using Domain.Models;
 
 namespace API.Mapping
@@ -37,6 +39,7 @@ namespace API.Mapping
             CreateMap<ProductForIngredientForCourseResource, Product>();
             CreateMap<OrderedCourseForSaveOrderResource, OrderedCourse>();
             CreateMap<SaveOrderResource, Order>();
+            CreateMap<GetCoordinateResource, Coordinate>();
         }
     }
 }

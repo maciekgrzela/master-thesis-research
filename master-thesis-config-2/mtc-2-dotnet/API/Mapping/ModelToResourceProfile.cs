@@ -2,6 +2,7 @@ using System.Linq;
 using Application;
 using Application.Resources.Auth;
 using Application.Resources.Bills.Get;
+using Application.Resources.Coordinate.List;
 using Application.Resources.Course.Get;
 using Application.Resources.CourseCategories.Get;
 using Application.Resources.Customers.Get;
@@ -17,6 +18,7 @@ using Application.Resources.StatusEntries.Get;
 using Application.Resources.Statuses.Get;
 using Application.Resources.Table.Get;
 using AutoMapper;
+using Domain.Algorithms.Models;
 using Domain.Models;
 
 namespace API.Mapping
@@ -74,6 +76,7 @@ namespace API.Mapping
             CreateMap<Customer, CustomerForBillResource>();
 
             CreateMap<Product, SaveProductResource>();
+            CreateMap<Coordinate, CoordinateResource>();
         }
     }
 }
