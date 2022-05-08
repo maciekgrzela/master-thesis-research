@@ -1,82 +1,80 @@
 const BusinessLogicError = require('../errors/BusinessLogicError');
-const AlgorithmsConfig = require('../helpers/algorithmsConfig');
 const Road = require('../algorithms/road-plan/logic/road');
-const {
-  randomizePopulation,
-} = require('../algorithms/road-plan/helpers/population');
-const {
-  prepareBestRoadCoords,
-} = require('../algorithms/road-plan/helpers/coordinates');
+const roadPlanConfig = require('../algorithms/road-plan/helpers/roadPlanConfig');
+const Coordinate = require('../algorithms/road-plan/logic/coordinate');
+const Population = require('../algorithms/road-plan/logic/population');
+const Status = require('../helpers/responseStatus');
 
-const roadPlan = async (coordinates) => {
+const roadPlan = async (getCoordinatesDto, bestResult) => {
   try {
-    AlgorithmsConfig.mutationProbability = 0.01;
-    AlgorithmsConfig.populationSize = Math.floor(0.75 * coordinates.length);
-    AlgorithmsConfig.numberOfCoordinates = coordinates.length;
-    AlgorithmsConfig.numberOfDominantsInNextGeneration = Math.floor(
-      0.25 * coordinates.length
+    roadPlanConfig.mutationProbability = 0.01;
+    roadPlanConfig.populationSize = Math.floor(0.75 * getCoordinatesDto.length);
+    roadPlanConfig.numberOfCoordinates = getCoordinatesDto.length;
+    roadPlanConfig.numberOfDominantsInNextGeneration = Math.floor(
+      0.25 * getCoordinatesDto.length
     );
 
-    let bestRoad = null;
-    let bestCoordinates = [];
-    let timeout = false;
+    let bestRoad = undefined;
+    let bestCoordinates = getCoordinatesDto.map((dto) => ({
+      latitude: dto.latitude,
+      longitude: dto.longitude,
+      address: dto.address,
+    }));
 
-    setTimeout(
-      (timeout) => {
-        timeout = true;
-      },
-      60000,
-      timeout
+    let coordinates = getCoordinatesDto.map(
+      (coord) => new Coordinate(coord.latitude, coord.longitude, coord.address)
     );
 
     const startSolution = new Road(coordinates);
-    let population = randomizePopulation(
+    let population = Population.randomized(
       startSolution,
-      AlgorithmsConfig.populationSize
+      roadPlanConfig.populationSize
     );
-    let better = true;
 
+    let better = true;
+    let iterations = 0;
+
+    let timeout = false;
+
+    const start = performance.now();
     while (!timeout) {
       if (better) {
-        const best = population.findBest();
-        bestRoad = best;
+        bestRoad = population.findBest();
       }
 
       better = false;
-      const oldFit = population.maxFit;
-
+      let oldFit = population.maxFitness;
       population = population.evolve();
 
-      if (population.maxFit > oldFit) {
+      if (population.maxFitness > oldFit) {
         better = true;
+      }
+
+      iterations++;
+      const duration = performance.now() - start;
+      if (duration >= 60000) {
+        timeout = true;
       }
     }
 
-    bestCoordinates = prepareBestRoadCoords(bestRoad);
+    if (bestRoad === undefined) {
+      throw new BusinessLogicError(
+        Status.INTERNAL_ERROR,
+        'Could not determine the most optimal road'
+      );
+    }
 
     return {
       status: Status.OK,
-      content: bestCoordinates,
+      content: {
+        iterations: iterations,
+        resultToBestRatio: bestResult / bestRoad.distance,
+      },
     };
   } catch (e) {
-    throw new BusinessLogicError(e.statusCode, e.content);
+    console.log(e);
+    throw new BusinessLogicError(Status.INTERNAL_ERROR, e.content);
   }
-};
-
-const getById = async (id) => {
-  const existingBill = await billsRepository.getBillById(id);
-
-  if (existingBill === null) {
-    throw new BusinessLogicError(
-      Status.NOT_FOUND,
-      'Unable to retrieve bill with specified identifier'
-    );
-  }
-
-  return {
-    status: Status.OK,
-    content: existingBill,
-  };
 };
 
 module.exports = {

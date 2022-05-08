@@ -69,6 +69,7 @@ app.use('/api/products', require('./controllers/products.controller'));
 app.use('/api/reservations', require('./controllers/reservations.controller'));
 app.use('/api/statuses', require('./controllers/statuses.controller'));
 app.use('/api/tables', require('./controllers/tables.controller'));
+app.use('/api/algorithms', require('./controllers/algorithms.controller'));
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 

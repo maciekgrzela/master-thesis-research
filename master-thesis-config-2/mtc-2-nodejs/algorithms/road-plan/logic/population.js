@@ -1,76 +1,95 @@
-const algorithmsConfig = require('../../../helpers/algorithmsConfig');
+const roadPlanConfig = require('../helpers/roadPlanConfig');
+const Road = require('../logic/road');
 
 class Population {
   roads;
-  maxFit;
+  maxFitness;
 
+  /**
+   *      Population constructor
+   */
   constructor(roads) {
     this.roads = roads;
-    this.maxFit = this.calculateMaxFit();
+    this.maxFitness = this.calculateMaxFitness();
   }
 
-  calculateMaxFit = () => {
-    return this.roads.sort((a, b) => b.fitnessRatio - a.fitnessRatio)[0];
+  static randomized = (road, size) => {
+    let tmp = [];
+
+    for (let i = 0; i < size; ++i) {
+      tmp.push(road.rearrange());
+    }
+
+    return new Population(tmp);
+  };
+
+  calculateMaxFitness = () => {
+    return this.roads.sort((a, b) => b.fitnessRatio - a.fitnessRatio)[0]
+      .fitnessRatio;
   };
 
   selection = () => {
     while (true) {
-      let index = Math.floor(
-        Math.random() * (algorithmsConfig.populationSize - 0 + 1) + 0
+      var index = Math.floor(
+        Math.random() * (roadPlanConfig.populationSize - 1 - 0 + 1) + 0
       );
 
-      if (Math.random() < this.roads[index].fitnessRatio / this.maxFit)
+      if (Math.random() < this.roads[index].fitnessRatio / this.maxFitness) {
         return new Road(this.roads[index].coordinates);
+      }
     }
   };
 
   generateNewPopulation = (size) => {
-    let population = [];
+    let roads = [];
 
     for (let i = 0; i < size; ++i) {
       let road = this.selection().crossing(this.selection());
 
-      road.coordinates.forEach((coordinate) => {
+      road.coordinates.forEach((_) => {
         road = road.mutation();
       });
 
-      population.push(road);
+      roads.push(road);
     }
 
-    return new Population(population);
+    return new Population(roads);
   };
 
-  elite = (size) => {
-    let best = [];
+  getEliteIndividuals = (size) => {
+    let roads = [];
     let tmp = new Population(this.roads);
 
     for (let i = 0; i < size; ++i) {
-      best.push(tmp.findBest());
-      let roadsExceptBest = tmp.roads.filter((p) => !best.includes(p));
-      tmp = new Population(roadsExceptBest);
-    }
+      const best = tmp.findBest();
 
-    return new Population(best);
+      if (!best) {
+        throw new Error('Undefined value for best variable');
+      }
+      roads.push(best);
+      tmp = new Population(
+        tmp.roads.filter(
+          (p) =>
+            roads.find((x) => x.fitnessRatio === p.fitnessRatio) === undefined
+        )
+      );
+    }
+    return new Population(roads);
   };
 
   findBest = () => {
-    this.roads.forEach((road) => {
-      if (road.fitnessRatio === this.maxFit) {
-        return road;
-      }
-    });
-
-    return null;
+    return this.roads.find((p) => p.fitnessRatio === this.maxFitness);
   };
 
   evolve = () => {
-    const best = this.elite(algorithmsConfig.numberOfDominantsInNextGeneration);
-    const newPopulation = this.generateNewPopulation(
-      algorithmsConfig.populationSize -
-        algorithmsConfig.numberOfDominantsInNextGeneration
+    let elite = this.getEliteIndividuals(
+      roadPlanConfig.numberOfDominantsInNextGeneration
     );
-
-    return new Population([...best.roads, ...newPopulation.roads]);
+    let newPopulation = this.generateNewPopulation(
+      roadPlanConfig.populationSize -
+        roadPlanConfig.numberOfDominantsInNextGeneration
+    );
+    return new Population([...elite.roads, ...newPopulation.roads]);
   };
 }
 
