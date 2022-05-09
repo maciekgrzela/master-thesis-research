@@ -12,9 +12,11 @@ namespace Domain.Models
         public virtual Table Table { get; set; }
         public List<OrderedCourse> OrderedCourses { get; set; }
 		public List<Bill> Bills { get; set; }
+        
         public List<StatusEntry> StatusEntries { get; set; }
         public string Note { get; set; }
         public string UserId { get; set; }
         public User User { get; set; }
+        public DateTime Created { get; set; }
     }
 }

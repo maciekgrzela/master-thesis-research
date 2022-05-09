@@ -1,0 +1,184 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Bill {
+  id             String          @id @default(uuid())
+  order          Order           @relation(fields: [orderId], references: [id])
+  orderId        String
+  customer       Customer?       @relation(fields: [customerId], references: [id])
+  customerId     String?
+  orderedCourses OrderedCourse[]
+  netPrice       Decimal
+  tax            Decimal
+  grossPrice     Decimal
+  created        DateTime        @default(now())
+}
+
+model Course {
+  id                       String          @id @default(uuid())
+  name                     String
+  grossPrice               Decimal
+  netPrice                 Decimal
+  tax                      Int
+  preparationTimeInMinutes Int
+  coursesCategory          CoursesCategory @relation(fields: [coursesCategoryId], references: [id])
+  coursesCategoryId        String
+  ingredients              Ingredient[]
+  orderedCourses           OrderedCourse[]
+}
+
+model Ingredient {
+  id        String  @id @default(uuid())
+  course    Course? @relation(fields: [courseId], references: [id])
+  courseId  String?
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  amount    Decimal
+}
+
+model CoursesCategory {
+  id      String   @id @default(uuid())
+  name    String
+  courses Course[]
+}
+
+model Customer {
+  id       String @id @default(uuid())
+  name     String
+  address1 String
+  address2 String
+  nip      String
+  bills    Bill[]
+}
+
+model Hall {
+  id           String  @id @default(uuid())
+  rowNumber    Int
+  columnNumber Int
+  tables       Table[]
+  description  String
+}
+
+model Table {
+  id               String        @id @default(uuid())
+  hall             Hall          @relation(fields: [hallId], references: [id])
+  hallId           String
+  orders           Order[]
+  reservations     Reservation[]
+  startCoordinateX Int
+  startCoordinateY Int
+  endCoordinateX   Int
+  endCoordinateY   Int
+}
+
+model Order {
+  id             String          @id @default(uuid())
+  table          Table           @relation(fields: [tableId], references: [id])
+  tableId        String
+  bills          Bill[]
+  orderedCourses OrderedCourse[]
+  statusEntries  StatusEntry[]
+  note           String
+  user           User            @relation(fields: [userId], references: [id])
+  userId         String
+  created        DateTime        @default(now())
+}
+
+model User {
+  id                 String     @id @default(uuid())
+  firstName          String
+  lastName           String
+  userName           String     @unique
+  email              String
+  passwordHash       String
+  phoneNumber        String
+  twoFactorEnabled   Boolean    @default(false)
+  emailConfirmed     Boolean    @default(true)
+  normalizedUserName String
+  normalizedEmail    String
+  lockoutEnd         DateTime?
+  lockoutEnabled     Boolean    @default(false)
+  accessFailedCount  Int        @default(0)
+  orders             Order[]
+  userRoleId         String?
+  UserRole           UserRole[]
+}
+
+model OrderedCourse {
+  id                 String        @id @default(uuid())
+  course             Course        @relation(fields: [courseId], references: [id])
+  courseId           String
+  order              Order         @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  orderId            String
+  bill               Bill?         @relation(fields: [billId], references: [id])
+  billId             String?
+  quantity           Int
+  billQuantity       Int?
+  percentageDiscount Int
+  statusEntries      StatusEntry[]
+}
+
+model Product {
+  id                 String           @id @default(uuid())
+  name               String
+  amount             Decimal
+  unit               String
+  productsCategory   ProductsCategory @relation(fields: [productsCategoryId], references: [id])
+  productsCategoryId String
+  ingredients        Ingredient[]
+}
+
+model ProductsCategory {
+  id       String    @id @default(uuid())
+  products Product[]
+  name     String
+}
+
+model StatusEntry {
+  id              String         @id @default(uuid())
+  status          Status         @relation(fields: [statusId], references: [id])
+  statusId        String
+  order           Order?         @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  orderId         String?
+  orderedCourse   OrderedCourse? @relation(fields: [orderedCourseId], references: [id])
+  orderedCourseId String?
+  created         DateTime       @default(now())
+  note            String
+}
+
+model Reservation {
+  id        String    @id @default(uuid())
+  table     Table     @relation(fields: [tableId], references: [id])
+  tableId   String
+  beginning DateTime
+  ending    DateTime?
+}
+
+model Status {
+  id            String        @id @default(uuid())
+  name          String
+  statusEntries StatusEntry[]
+}
+
+model Role {
+  id       String     @id @default(uuid())
+  name     String
+  UserRole UserRole[]
+}
+
+model UserRole {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId String
+}

@@ -120,7 +120,7 @@ namespace Application.Services
                 if (orderedCourse.BillId != null)
                 {
                     existingBill = await billRepository.GetBillAsync(orderedCourse.BillId.GetValueOrDefault());
-                    if (existingOrder == null)
+                    if (existingBill == null)
                     {
                         return new Response<OrderedCourse>(HttpStatusCode.NotFound, $"Bill with id:{orderedCourse.BillId} not found");
                     }
@@ -164,16 +164,13 @@ namespace Application.Services
             if (orderedCourse.BillId != null)
             {
                 existingBill = await billRepository.GetBillAsync(orderedCourse.BillId.GetValueOrDefault());
-                if (existingOrder == null)
+                if (existingBill == null)
                 {
                     return new Response<OrderedCourse>(HttpStatusCode.NotFound, $"Bill with id:{orderedCourse.BillId} not found");
                 }
-
                 existingOrderedCourse.Bill = existingBill;
                 existingOrderedCourse.BillQuantity = orderedCourse.BillQuantity;
             }
-
-
             
             existingOrderedCourse.Course = existingCourse;
             existingOrderedCourse.Order = existingOrder;

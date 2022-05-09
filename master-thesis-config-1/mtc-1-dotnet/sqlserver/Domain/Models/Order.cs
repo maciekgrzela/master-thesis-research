@@ -16,5 +16,6 @@ namespace Domain.Models
         public string Note { get; set; }
         public string UserId { get; set; }
         public User User { get; set; }
+        public DateTime Created { get; set; }
     }
 }
