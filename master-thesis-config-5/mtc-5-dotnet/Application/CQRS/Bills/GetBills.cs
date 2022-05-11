@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,13 +36,20 @@ namespace Application.CQRS.Bills
             
             public async Task<Response<PagedList<BillResource>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var bills = GetBillsCompiledQuery.BillsCompiledQuery(_context).AsQueryable();
+                var bills = _context.Bills
+                    .Include(p => p.Customer)
+                    .Include(p => p.Order)
+                    .Include(p => p.OrderedCourses)
+                    .OrderBy(p => p.Created)
+                    .AsSplitQuery()
+                    .AsNoTracking()
+                    .AsQueryable();
 
-                var billResources = _mapper.Map<IQueryable<Bill>, IQueryable<BillResource>>(bills);
 
-                var pagedList = await PagedList<BillResource>.ToPagedListAsync(billResources, request.QueryParams.PageNumber, request.QueryParams.PageSize);
+                var pagedList = await PagedList<Bill>.ToPagedListAsync(bills, request.QueryParams.PageNumber,
+                    request.QueryParams.PageSize);
 
-                return new Response<PagedList<BillResource>>(HttpStatusCode.OK, pagedList);
+                return new Response<PagedList<BillResource>>(HttpStatusCode.OK, _mapper.Map<PagedList<Bill>, PagedList<BillResource>>(pagedList));
             }
         }
     }

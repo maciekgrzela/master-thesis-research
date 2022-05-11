@@ -29,11 +29,10 @@ namespace Application
             var count = await source.CountAsync();
 
             var skipCount = (pageNumber - 1) * pageSize;
-            var pageCount = pageSize;
-            
+
             var items = await source
                 .Skip(skipCount)
-                .Take(pageCount)
+                .Take(pageSize)
                 .ToListAsync();
             
             return new PagedList<T>(items, count, pageSize, pageNumber);
