@@ -32,18 +32,9 @@ namespace Application.CQRS.Orders
             
             public async Task<Response<OrderResource>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var order = await _context.Orders
-                    .Include(p => p.Table)
-                    .Include(p => p.User)
-                    .Include(p => p.StatusEntries)
-                    .ThenInclude(p => p.Status)
-                    .Include(p => p.OrderedCourses)
-                    .ThenInclude(p => p.Course)
-                    .Include(p => p.OrderedCourses)
-                    .ThenInclude(p => p.StatusEntries)
-                    .ThenInclude(p => p.Status)
-                    .AsSplitQuery()
-                    .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken: cancellationToken);
+                var orderId = request.Id;
+
+                var order = await GetSingleOrderCompiledQuery.SingleOrderCompiledQuery(_context, orderId);
 
                 var orderResource = _mapper.Map<Order, OrderResource>(order);
 

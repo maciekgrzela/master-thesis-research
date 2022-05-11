@@ -7,6 +7,7 @@ using Application.Resources.Bills.Get;
 using Application.Responses;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -33,14 +34,11 @@ namespace Application.CQRS.Bills
             
             public async Task<Response<PagedList<BillResource>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var bills = _context.Bills
-                    .Include(p => p.Customer)
-                    .Include(p => p.Order)
-                    .Include(p => p.OrderedCourses)
-                    .ProjectTo<BillResource>(_mapper.ConfigurationProvider)
-                    .AsQueryable();
+                var bills = GetBillsCompiledQuery.BillsCompiledQuery(_context).AsQueryable();
 
-                var pagedList = await PagedList<BillResource>.ToPagedListAsync(bills, request.QueryParams.PageNumber, request.QueryParams.PageSize);
+                var billResources = _mapper.Map<IQueryable<Bill>, IQueryable<BillResource>>(bills);
+
+                var pagedList = await PagedList<BillResource>.ToPagedListAsync(billResources, request.QueryParams.PageNumber, request.QueryParams.PageSize);
 
                 return new Response<PagedList<BillResource>>(HttpStatusCode.OK, pagedList);
             }

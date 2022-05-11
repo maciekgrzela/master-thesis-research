@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Responses;
 using Domain.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using Persistence.Repositories.Interfaces;
 
@@ -34,9 +35,11 @@ namespace Application.CQRS.Products
             
             public async Task<Response<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var existingCategory = await _context.ProductsCategories.FindAsync(new object[] { request.ProductsCategoryId }, cancellationToken: cancellationToken);
+                var existingCategory = await _context.ProductsCategories
+                    .AsNoTracking()
+                    .AnyAsync(p => p.Id == request.ProductsCategoryId, cancellationToken: cancellationToken);
 
-                if(existingCategory == null)
+                if(existingCategory)
                 {
                     return new Response<Unit>(HttpStatusCode.NotFound, $"Category with id: {request.ProductsCategoryId} not found");
                 }

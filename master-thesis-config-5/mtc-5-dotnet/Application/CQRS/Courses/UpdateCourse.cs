@@ -51,21 +51,22 @@ namespace Application.CQRS.Courses
             
             public async Task<Response<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                var courseId = request.GetId();
+                
                 var existingCourse = await _context.Courses
-                    .Include(p => p.CoursesCategory)
                     .Include(p => p.Ingredients)
-                    .ThenInclude(p => p.Product)
-                    .ThenInclude(p => p.ProductsCategory)
-                    .FirstOrDefaultAsync(p => p.Id == request.GetId(), cancellationToken: cancellationToken);
+                    .FirstOrDefaultAsync(p => p.Id == courseId, cancellationToken: cancellationToken);
 
                 if (existingCourse == null)
                 {
-                    return new Response<Unit>(HttpStatusCode.NotFound, $"Course with id:{request.GetId()} not found");
+                    return new Response<Unit>(HttpStatusCode.NotFound, $"Course with id:{courseId} not found");
                 }
 
-                var existingCourseCategory = await _context.CourseCategories.FirstOrDefaultAsync(p => p.Id == request.GetId(), cancellationToken: cancellationToken);
+                var existingCourseCategory = await _context.CourseCategories
+                    .AsNoTracking()
+                    .AnyAsync(p => p.Id == courseId, cancellationToken: cancellationToken);
 
-                if (existingCourseCategory == null)
+                if (existingCourseCategory)
                 {
                     return new Response<Unit>(HttpStatusCode.NotFound, $"Category with id:{request.CoursesCategoryId} not found");
                 }
@@ -74,7 +75,8 @@ namespace Application.CQRS.Courses
 
                 foreach (var ingredient in request.Ingredients)
                 {
-                    var existingProduct = await _context.Products.Include(p => p.ProductsCategory).FirstOrDefaultAsync(p => p.Id == ingredient.ProductId, cancellationToken: cancellationToken);
+                    var existingProduct = await _context.Products
+                        .FirstOrDefaultAsync(p => p.Id == ingredient.ProductId, cancellationToken: cancellationToken);
 
                     if(existingProduct == null)
                     {

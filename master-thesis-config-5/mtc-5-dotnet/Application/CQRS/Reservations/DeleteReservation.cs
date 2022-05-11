@@ -35,7 +35,8 @@ namespace Application.CQRS.Reservations
             
             public async Task<Response<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var existingReservation = await _context.Reservations.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken: cancellationToken); 
+                var existingReservation = await _context.Reservations
+                    .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken: cancellationToken); 
 
                 if (existingReservation == null)
                 {
