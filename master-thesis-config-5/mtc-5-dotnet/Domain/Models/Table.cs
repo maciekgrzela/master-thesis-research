@@ -14,20 +14,20 @@ namespace Domain.Models
 
 		public Hall Hall { get; set; }
 		
-		public List<Order> Orders { get; set; }
+		public virtual IEnumerable<Order> Orders { get; set; }
 
-		public List<Reservation> Reservations { get; set; }
+		public virtual IEnumerable<Reservation> Reservations { get; set; }
 
-		[Required, Range(0, Int32.MaxValue)]
+		[Required, Range(0, int.MaxValue)]
 		public int StartCoordinateX { get; set; }
 		
-		[Required, Range(0, Int32.MaxValue)]
+		[Required, Range(0, int.MaxValue)]
 		public int StartCoordinateY { get; set; }
 
-		[Required, Range(0, Int32.MaxValue)]
+		[Required, Range(0, int.MaxValue)]
 		public int EndCoordinateX { get; set; }
 
-		[Required, Range(0, Int32.MaxValue)]
+		[Required, Range(0, int.MaxValue)]
 		public int EndCoordinateY { get; set; }
 	}
 }

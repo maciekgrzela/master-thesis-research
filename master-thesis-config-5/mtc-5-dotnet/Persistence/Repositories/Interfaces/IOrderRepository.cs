@@ -8,8 +8,8 @@ namespace Persistence.Repositories.Interfaces
     public interface IOrderRepository
     {
         Task<Order> GetOrderAsync(Guid id);
-        Task<List<Order>> GetUserOrdersAsync(string userId);
-        Task<List<Order>> ListAsync();
+        Task<IEnumerable<Order>> GetUserOrdersAsync(string userId);
+        Task<IEnumerable<Order>> ListAsync();
         Task SaveAsync(Order order);
         void Update(Order order);
         void Delete(Order order);

@@ -11,9 +11,9 @@ namespace Application.Services.Interfaces
 {
     public interface ICoursesService
     {
-        Task<Response<List<Course>>> ListAsync();
+        Task<Response<IEnumerable<Course>>> ListAsync();
         Task<Response<Course>> GetCourseAsync(Guid id);
-        Task<Response<List<Ingredient>>> GetIngredientsForCourseAsync(Guid id);
+        Task<Response<IEnumerable<Ingredient>>> GetIngredientsForCourseAsync(Guid id);
         Task<Response<Course>> SaveAsync(SaveCourseResource status);
         Task<Response<Course>> UpdateAsync(Guid id, SaveCourseResource status);
         Task<Response<Course>> DeleteAsync(Guid id);

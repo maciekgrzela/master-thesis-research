@@ -41,7 +41,7 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<DataContext>(opt =>
+            services.AddDbContextPool<DataReadContext>(opt =>
             {
                 opt.UseMySql(Configuration.GetConnectionString("MySqlConnectionString"), ServerVersion.AutoDetect(Configuration.GetConnectionString("MySqlConnectionString")));
             }, 1024);
@@ -68,7 +68,7 @@ namespace API
             builder.AddRoles<IdentityRole>();
             builder.AddRoleManager<RoleManager<IdentityRole>>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.RoleType, builder.Services);
-            identityBuilder.AddEntityFrameworkStores<DataContext>();
+            identityBuilder.AddEntityFrameworkStores<DataReadContext>();
             identityBuilder.AddRoles<IdentityRole>();
             identityBuilder.AddRoleManager<RoleManager<IdentityRole>>();
             identityBuilder.AddSignInManager<SignInManager<User>>();

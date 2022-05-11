@@ -35,10 +35,10 @@ namespace Application.Services
             return new Response<Status>(HttpStatusCode.OK, existingStatus);
         }
 
-        public async Task<Response<List<Status>>> ListAsync()
+        public async Task<Response<IEnumerable<Status>>> ListAsync()
         {
             var statuses = await statusesRepository.ListAsync();
-            return new Response<List<Status>>(HttpStatusCode.OK, statuses);
+            return new Response<IEnumerable<Status>>(HttpStatusCode.OK, statuses);
         }
 
         public async Task<Response<Status>> SaveAsync(SaveStatusResource status)

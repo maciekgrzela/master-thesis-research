@@ -36,9 +36,9 @@ namespace API.Controllers
                 return GenerateResponse<string>(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<Product>, List<ProductResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<Product>, IEnumerable<ProductResource>>(result.Type);
 
-            return GenerateResponse<List<ProductResource>>(result.Status, responseBody);
+            return GenerateResponse<IEnumerable<ProductResource>>(result.Status, responseBody);
         }
 
         [HttpGet("{id}")]

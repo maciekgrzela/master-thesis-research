@@ -40,7 +40,7 @@ namespace API.Controllers
                 return BadRequest(result.Message);
             }
             
-            var resultCoordinates = mapper.Map<List<Coordinate>, List<CoordinateResource>>(result.Type);
+            var resultCoordinates = mapper.Map<IEnumerable<Coordinate>, IEnumerable<CoordinateResource>>(result.Type);
             
             return Ok(resultCoordinates);
         }

@@ -38,7 +38,7 @@ namespace API.Controllers
                 return GenerateResponse(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<Order>, List<OrderResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<Order>, IEnumerable<OrderResource>>(result.Type);
 
             return GenerateResponse(result.Status, responseBody);
         }
@@ -84,7 +84,7 @@ namespace API.Controllers
                 return GenerateResponse(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<Order>, List<OrderResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<Order>, IEnumerable<OrderResource>>(result.Type);
 
             return GenerateResponse(result.Status, responseBody);
         }
@@ -99,7 +99,7 @@ namespace API.Controllers
                 return GenerateResponse(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<Order>, List<OrderResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<Order>, IEnumerable<OrderResource>>(result.Type);
 
             return GenerateResponse(result.Status, responseBody);
         }

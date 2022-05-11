@@ -11,9 +11,9 @@ namespace Persistence.Repositories
 {
     public class BillRepository : BaseRepository, IBillRepository
     {
-        public BillRepository(DataContext context) : base(context) {}
+        public BillRepository(DataReadContext context) : base(context) {}
 
-        public async Task<List<Bill>> ListAsync()
+        public async Task<IEnumerable<Bill>> ListAsync()
         {
             return await context.Bills
             .Include(p => p.Customer)

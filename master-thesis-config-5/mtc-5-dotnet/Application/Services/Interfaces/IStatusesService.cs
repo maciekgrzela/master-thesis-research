@@ -11,7 +11,7 @@ namespace Application.Services.Interfaces
 {
     public interface IStatusesService
     {
-        Task<Response<List<Status>>> ListAsync();
+        Task<Response<IEnumerable<Status>>> ListAsync();
         Task<Response<Status>> GetStatusAsync(Guid id);
         Task<Response<Status>> SaveAsync(SaveStatusResource status);
         Task<Response<Status>> UpdateAsync(Guid id, SaveStatusResource status);

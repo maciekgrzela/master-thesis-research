@@ -10,9 +10,9 @@ namespace Persistence.Repositories
 {
     public class HallRepository : IHallRepository
     {
-        private readonly DataContext context;
+        private readonly DataReadContext context;
 
-        public HallRepository(DataContext context)
+        public HallRepository(DataReadContext context)
         {
             this.context = context;
         }
@@ -22,7 +22,7 @@ namespace Persistence.Repositories
             context.Halls.Remove(hall);
         }
 
-        public async Task<List<Hall>> GetAllAsync()
+        public async Task<IEnumerable<Hall>> GetAllAsync()
         {
             return await context.Halls.ToListAsync();
         }

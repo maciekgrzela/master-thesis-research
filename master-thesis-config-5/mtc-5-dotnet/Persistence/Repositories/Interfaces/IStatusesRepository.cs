@@ -9,7 +9,7 @@ namespace Persistence.Repositories.Interfaces
 {
     public interface IStatusesRepository
     {
-        Task<List<Status>> ListAsync();
+        Task<IEnumerable<Status>> ListAsync();
         Task<Status> GetStatusAsync(Guid id);
         Task<Status> GetStatusByNameAsync(string status);
         Task SaveAsync(Status status);

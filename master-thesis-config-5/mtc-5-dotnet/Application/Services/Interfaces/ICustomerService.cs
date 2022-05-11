@@ -9,7 +9,7 @@ namespace Application.Services.Interfaces
 {
     public interface ICustomerService
     {
-        Task<Response<List<Customer>>> GetAllAsync();
+        Task<Response<IEnumerable<Customer>>> GetAllAsync();
 
         Task<Response<Customer>> GetAsync(Guid id);
 

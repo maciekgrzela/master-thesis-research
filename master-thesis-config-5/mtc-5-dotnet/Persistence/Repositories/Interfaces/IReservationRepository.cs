@@ -7,9 +7,9 @@ namespace Persistence.Repositories.Interfaces
 {
     public interface IReservationRepository
     {
-        Task<List<Reservation>> GetAllAsync();
+        Task<IEnumerable<Reservation>> GetAllAsync();
 
-        Task<List<Reservation>> SearchByTableAsync(Guid tableId);
+        Task<IEnumerable<Reservation>> SearchByTableAsync(Guid tableId);
 
         Task<Reservation> GetAsync(Guid id);
 

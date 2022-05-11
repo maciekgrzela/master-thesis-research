@@ -10,14 +10,14 @@ namespace Persistence.Repositories
 {
     public class ProductRepository : BaseRepository, IProductRepository
     {
-        public ProductRepository(DataContext context) : base(context) {}
+        public ProductRepository(DataReadContext context) : base(context) {}
 
         public async Task<Product> GetProductAsync(Guid id)
         {
             return await context.Products.Include(p => p.ProductsCategory).FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<Product>> ListAsync()
+        public async Task<IEnumerable<Product>> ListAsync()
         {
             return await context.Products.Include(p => p.ProductsCategory).ToListAsync();
         }

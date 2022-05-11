@@ -11,7 +11,7 @@ namespace Domain.Models
         [Required]
         public Guid TableId { get; set; }
 
-        public Table Table { get; set; }
+        public virtual Table Table { get; set; }
 
         [Required]
         public DateTime Beginning { get; set; }

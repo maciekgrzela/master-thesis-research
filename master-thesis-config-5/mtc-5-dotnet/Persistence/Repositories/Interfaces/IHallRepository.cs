@@ -7,7 +7,7 @@ namespace Persistence.Repositories.Interfaces
 {
     public interface IHallRepository
     {
-        Task<List<Hall>> GetAllAsync();
+        Task<IEnumerable<Hall>> GetAllAsync();
 
         Task<Hall> GetAsync(Guid id);
 

@@ -50,10 +50,10 @@ namespace Application.Services
             return new Response<Ingredient>(HttpStatusCode.OK, existingIngredient);
         }
 
-        public async Task<Response<List<Ingredient>>> ListAsync()
+        public async Task<Response<IEnumerable<Ingredient>>> ListAsync()
         {
             var ingredients = await ingredientRepository.ListAsync();
-            return new Response<List<Ingredient>>(HttpStatusCode.OK, ingredients);
+            return new Response<IEnumerable<Ingredient>>(HttpStatusCode.OK, ingredients);
         }
 
         public async Task<Response<Ingredient>> SaveAsync(Ingredient ingredient)

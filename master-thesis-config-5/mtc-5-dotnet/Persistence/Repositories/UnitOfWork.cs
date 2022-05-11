@@ -6,9 +6,9 @@ namespace Persistence.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DataContext context;
+        private readonly DataReadContext context;
 
-        public UnitOfWork(DataContext context)
+        public UnitOfWork(DataReadContext context)
         {
             this.context = context;
         }

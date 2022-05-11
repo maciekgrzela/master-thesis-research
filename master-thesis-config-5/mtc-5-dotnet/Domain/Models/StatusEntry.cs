@@ -9,6 +9,7 @@ namespace Domain.Models
         public Guid Id { get; set; }
         public Guid StatusId { get; set; }
         public virtual Status Status { get; set; }
+        [MaxLength(500)]
         public string Note { get; set; }
         public Guid? OrderId { get; set; }
         public virtual Order Order { get; set; }

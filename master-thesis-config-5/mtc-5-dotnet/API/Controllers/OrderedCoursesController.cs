@@ -31,9 +31,9 @@ namespace API.Controllers
                 return GenerateResponse<string>(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<OrderedCourse>, List<OrderedCourseResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<OrderedCourse>, IEnumerable<OrderedCourseResource>>(result.Type);
 
-            return GenerateResponse<List<OrderedCourseResource>>(result.Status, responseBody);
+            return GenerateResponse<IEnumerable<OrderedCourseResource>>(result.Status, responseBody);
         }
 
         [HttpGet("{id}")]
@@ -53,22 +53,17 @@ namespace API.Controllers
         
 
         [HttpPost]
-        public async Task<IActionResult> SaveAsync([FromBody] List<SaveOrderedCourseResource> resource)
+        public async Task<IActionResult> SaveAsync([FromBody] IEnumerable<SaveOrderedCourseResource> resource)
         {
             if(!ModelState.IsValid)
             {
                 return GenerateResponse(HttpStatusCode.BadRequest, ModelState.GetErrorMessages());
             }
 
-            var orderedCourse = mapper.Map<List<SaveOrderedCourseResource>, List<OrderedCourse>>(resource);
+            var orderedCourse = mapper.Map<IEnumerable<SaveOrderedCourseResource>, IEnumerable<OrderedCourse>>(resource);
             var result = await orderedCourseService.SaveAsync(orderedCourse);
 
-            if(!result.Success)
-            {
-                return GenerateResponse<string>(result.Status, result.Message);
-            }
-
-            return GenerateResponse<OrderedCourse>(HttpStatusCode.NoContent, new OrderedCourse());
+            return !result.Success ? GenerateResponse(result.Status, result.Message) : GenerateResponse(HttpStatusCode.NoContent, new OrderedCourse());
         }
 
         [HttpPut("{id}")]

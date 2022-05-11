@@ -9,9 +9,9 @@ namespace Application.Services.Interfaces
 {
     public interface ITableService
     {
-        Task<Response<List<Table>>> GetAllAsync();
+        Task<Response<IEnumerable<Table>>> GetAllAsync();
 
-        Task<Response<List<Table>>> GetAllForHallAsync(Guid hallId);
+        Task<Response<IEnumerable<Table>>> GetAllForHallAsync(Guid hallId);
 
         Task<Response<Table>> GetAsync(Guid id);
 

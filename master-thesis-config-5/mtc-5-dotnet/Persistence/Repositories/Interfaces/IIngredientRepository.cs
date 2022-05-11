@@ -7,10 +7,10 @@ namespace Persistence.Repositories.Interfaces
 {
     public interface IIngredientRepository
     {
-        Task<List<Ingredient>> ListAsync();
+        Task<IEnumerable<Ingredient>> ListAsync();
         Task<Ingredient> GetIngredientAsync(Guid id);
         Task SaveAsync(Ingredient ingredient);
-        Task SaveRangeAsync(List<Ingredient> ingredients);
+        Task SaveRangeAsync(IEnumerable<Ingredient> ingredients);
         void Update(Ingredient ingredient);
         void Delete(Ingredient ingredient);
     }

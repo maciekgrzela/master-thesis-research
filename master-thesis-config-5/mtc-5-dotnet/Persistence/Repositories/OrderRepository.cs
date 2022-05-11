@@ -11,7 +11,7 @@ namespace Persistence.Repositories
 {
     public class OrderRepository : BaseRepository, IOrderRepository
     {
-        public OrderRepository(DataContext context) : base(context) {}
+        public OrderRepository(DataReadContext context) : base(context) {}
 
         public async Task<Order> GetOrderAsync(Guid id)
         {
@@ -29,7 +29,7 @@ namespace Persistence.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<Order>> GetUserOrdersAsync(string userId)
+        public async Task<IEnumerable<Order>> GetUserOrdersAsync(string userId)
         {
             return await context.Orders
                 .Include(p => p.Table)
@@ -42,7 +42,7 @@ namespace Persistence.Repositories
                 .Where(p => p.User.Id == userId).ToListAsync();
         }
 
-        public async Task<List<Order>> ListAsync()
+        public async Task<IEnumerable<Order>> ListAsync()
         {
             return await context.Orders
                 .Include(p => p.Table)

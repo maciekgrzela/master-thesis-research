@@ -31,9 +31,9 @@ namespace API.Controllers
                 return GenerateResponse<string>(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<CoursesCategory>, List<CoursesCategoryResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<CoursesCategory>, IEnumerable<CoursesCategoryResource>>(result.Type);
 
-            return GenerateResponse<List<CoursesCategoryResource>>(result.Status, responseBody);
+            return GenerateResponse(result.Status, responseBody);
         }
 
         [HttpGet("{id}")]
@@ -48,7 +48,7 @@ namespace API.Controllers
 
             var responseBody = mapper.Map<CoursesCategory, CoursesCategoryResource>(result.Type);
 
-            return GenerateResponse<CoursesCategoryResource>(result.Status, responseBody);
+            return GenerateResponse(result.Status, responseBody);
         }
 
         [HttpPost]
@@ -64,10 +64,10 @@ namespace API.Controllers
 
             if(!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
-            return GenerateResponse<CoursesCategory>(HttpStatusCode.NoContent, new CoursesCategory());
+            return GenerateResponse(HttpStatusCode.NoContent, new CoursesCategory());
         }
 
         [HttpPut("{id}")]
@@ -83,10 +83,10 @@ namespace API.Controllers
 
             if(!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
-            return GenerateResponse<CoursesCategory>(HttpStatusCode.NoContent, new CoursesCategory());
+            return GenerateResponse(HttpStatusCode.NoContent, new CoursesCategory());
         }
 
         [HttpDelete("{id}")]
@@ -96,10 +96,10 @@ namespace API.Controllers
 
             if(!result.Success)
             {
-                return GenerateResponse<string>(result.Status, result.Message);
+                return GenerateResponse(result.Status, result.Message);
             }
 
-            return GenerateResponse<CoursesCategory>(HttpStatusCode.NoContent, new CoursesCategory());
+            return GenerateResponse(HttpStatusCode.NoContent, new CoursesCategory());
         }
     }
 }

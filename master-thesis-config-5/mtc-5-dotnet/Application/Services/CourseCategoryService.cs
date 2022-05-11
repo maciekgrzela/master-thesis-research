@@ -47,10 +47,10 @@ namespace Application.Services
             return new Response<CoursesCategory>(HttpStatusCode.OK, existingCourseCategory);
         }
 
-        public async Task<Response<List<CoursesCategory>>> ListAsync()
+        public async Task<Response<IEnumerable<CoursesCategory>>> ListAsync()
         {
             var courseCategories = await courseCategoryRepository.ListAsync();
-            return new Response<List<CoursesCategory>>(HttpStatusCode.OK, courseCategories);
+            return new Response<IEnumerable<CoursesCategory>>(HttpStatusCode.OK, courseCategories);
         }
 
         public async Task<Response<CoursesCategory>> SaveAsync(CoursesCategory category)

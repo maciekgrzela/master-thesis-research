@@ -9,7 +9,7 @@ namespace Application.Services.Interfaces
 {
     public interface ICourseCategoryService
     {
-        Task<Response<List<CoursesCategory>>> ListAsync();
+        Task<Response<IEnumerable<CoursesCategory>>> ListAsync();
         Task<Response<CoursesCategory>> GetCoursesCategoryAsync(Guid id);
         Task<Response<CoursesCategory>> SaveAsync(CoursesCategory category);
         Task<Response<CoursesCategory>> UpdateAsync(Guid id, CoursesCategory category);

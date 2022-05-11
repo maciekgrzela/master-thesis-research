@@ -10,7 +10,7 @@ namespace Persistence.Repositories
 {
     public class CourseCategoryRepository : BaseRepository, ICourseCategoryRepository
     {
-        public CourseCategoryRepository(DataContext context) : base(context) {}
+        public CourseCategoryRepository(DataReadContext context) : base(context) {}
 
         public void Delete(CoursesCategory category)
         {
@@ -22,7 +22,7 @@ namespace Persistence.Repositories
             return await context.CourseCategories.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<CoursesCategory>> ListAsync()
+        public async Task<IEnumerable<CoursesCategory>> ListAsync()
         {
             return await context.CourseCategories.ToListAsync();
         }

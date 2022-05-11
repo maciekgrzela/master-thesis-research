@@ -8,7 +8,7 @@ namespace Application.Services.Interfaces
 {
     public interface IProductsCategoryService
     {
-        Task<Response<List<ProductsCategory>>> ListAsync();
+        Task<Response<IEnumerable<ProductsCategory>>> ListAsync();
         Task<Response<ProductsCategory>> GetProductsCategoryAsync(Guid id);
         Task<Response<ProductsCategory>> SaveAsync(ProductsCategory category);
         Task<Response<ProductsCategory>> UpdateAsync(Guid id, ProductsCategory category);

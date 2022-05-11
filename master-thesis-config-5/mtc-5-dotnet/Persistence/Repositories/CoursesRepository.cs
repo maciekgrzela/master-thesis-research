@@ -11,7 +11,7 @@ namespace Persistence.Repositories
 {
     public class CoursesRepository : BaseRepository, ICoursesRepository
     {
-        public CoursesRepository(DataContext context) : base(context) {}
+        public CoursesRepository(DataReadContext context) : base(context) {}
 
         public async Task<Course> GetCourseAsync(Guid id)
         {
@@ -23,7 +23,7 @@ namespace Persistence.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<System.Collections.Generic.List<Course>> ListAsync()
+        public async Task<System.Collections.Generic.IEnumerable<Course>> ListAsync()
         {
             return await context.Courses
                 .Include(p => p.CoursesCategory)

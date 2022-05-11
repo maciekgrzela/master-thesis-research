@@ -12,9 +12,9 @@ namespace Persistence.Repositories
 {
     public class StatusesRepository : BaseRepository, IStatusesRepository
     {
-        public StatusesRepository(DataContext context) : base(context) { }
+        public StatusesRepository(DataReadContext context) : base(context) { }
 
-        public async Task<List<Status>> ListAsync()
+        public async Task<IEnumerable<Status>> ListAsync()
         {
             return await context.Statuses.ToListAsync();
         }

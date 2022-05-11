@@ -7,7 +7,7 @@ namespace Persistence.Repositories.Interfaces
 {
     public interface ICustomerRepository
     {
-        Task<List<Customer>> GetAllAsync();
+        Task<IEnumerable<Customer>> GetAllAsync();
 
         Task<Customer> GetAsync(Guid id);
 

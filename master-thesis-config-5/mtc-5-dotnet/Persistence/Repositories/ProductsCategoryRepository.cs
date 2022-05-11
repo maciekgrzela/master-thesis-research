@@ -10,7 +10,7 @@ namespace Persistence.Repositories
 {
     public class ProductsCategoryRepository : BaseRepository, IProductsCategoryRepository
     {
-        public ProductsCategoryRepository(DataContext context) : base(context) {}
+        public ProductsCategoryRepository(DataReadContext context) : base(context) {}
 
         public void Delete(ProductsCategory category)
         {
@@ -22,7 +22,7 @@ namespace Persistence.Repositories
             return await context.ProductsCategories.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<ProductsCategory>> ListAsync()
+        public async Task<IEnumerable<ProductsCategory>> ListAsync()
         {
             return await context.ProductsCategories.ToListAsync();
         }

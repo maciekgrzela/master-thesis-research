@@ -11,9 +11,9 @@ namespace Persistence.Repositories
 {
     public class ReservationRepository : IReservationRepository
     {
-        private readonly DataContext context;
+        private readonly DataReadContext context;
 
-        public ReservationRepository(DataContext context)
+        public ReservationRepository(DataReadContext context)
         {
             this.context = context;
         }
@@ -23,7 +23,7 @@ namespace Persistence.Repositories
             context.Reservations.Remove(reservation);
         }
 
-        public async Task<List<Reservation>> GetAllAsync()
+        public async Task<IEnumerable<Reservation>> GetAllAsync()
         {
             return await context.Reservations.Include(p => p.Table).ToListAsync();
         }
@@ -38,7 +38,7 @@ namespace Persistence.Repositories
             await context.Reservations.AddAsync(reservation);
         }
 
-        public async Task<List<Reservation>> SearchByTableAsync(Guid tableId)
+        public async Task<IEnumerable<Reservation>> SearchByTableAsync(Guid tableId)
         {
             return await context.Reservations
                 .Include(p => p.Table)

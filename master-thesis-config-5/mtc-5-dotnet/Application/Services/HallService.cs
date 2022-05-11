@@ -35,10 +35,10 @@ namespace Application.Services
             return new Response<Hall>(HttpStatusCode.NoContent, existingHall);
         }
 
-        public async Task<Response<List<Hall>>> GetAllAsync()
+        public async Task<Response<IEnumerable<Hall>>> GetAllAsync()
         {
             var halls = await hallRepository.GetAllAsync();
-            return new Response<List<Hall>>(HttpStatusCode.OK, halls);
+            return new Response<IEnumerable<Hall>>(HttpStatusCode.OK, halls);
         }
 
         public async Task<Response<Hall>> GetAsync(Guid id)

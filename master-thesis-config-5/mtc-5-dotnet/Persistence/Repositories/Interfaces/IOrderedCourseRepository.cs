@@ -7,8 +7,8 @@ namespace Persistence.Repositories.Interfaces
 {
     public interface IOrderedCourseRepository
     {
-         Task<List<OrderedCourse>> ListAsync();
-         Task<List<OrderedCourse>> GetCoursesForBillId(Guid id);
+         Task<IEnumerable<OrderedCourse>> ListAsync();
+         Task<IEnumerable<OrderedCourse>> GetCoursesForBillId(Guid id);
          Task<OrderedCourse> GetOrderedCourseAsync(Guid id);
          Task SaveAsync(OrderedCourse orderedCourse);
          void Update(OrderedCourse orderedCourse);

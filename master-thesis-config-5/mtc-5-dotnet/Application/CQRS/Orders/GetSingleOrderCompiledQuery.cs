@@ -9,9 +9,9 @@ namespace Application.CQRS.Orders
 {
     public class GetSingleOrderCompiledQuery
     {
-        public static readonly Func<DataContext, Guid, Task<Order>> SingleOrderCompiledQuery
+        public static readonly Func<DataReadContext, Guid, Task<Order>> SingleOrderCompiledQuery
             = EF.CompileAsyncQuery(
-                (DataContext context, Guid orderId) => context.Orders
+                (DataReadContext context, Guid orderId) => context.Orders
                     .Include(p => p.Table)
                     .Include(p => p.User)
                     .Include(p => p.StatusEntries)

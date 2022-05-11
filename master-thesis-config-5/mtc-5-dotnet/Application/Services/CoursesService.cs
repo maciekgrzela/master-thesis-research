@@ -41,10 +41,10 @@ namespace Application.Services
             return new Response<Course>(HttpStatusCode.OK, existingCourse);
         }
 
-        public async Task<Response<List<Course>>> ListAsync()
+        public async Task<Response<IEnumerable<Course>>> ListAsync()
         {
             var courses = await coursesRepository.ListAsync();
-            return new Response<List<Course>>(HttpStatusCode.OK, courses);
+            return new Response<IEnumerable<Course>>(HttpStatusCode.OK, courses);
         }
 
         public async Task<Response<Course>> SaveAsync(SaveCourseResource course)
@@ -163,18 +163,18 @@ namespace Application.Services
             return new Response<Course>(HttpStatusCode.NoContent, existingCourse);
         }
 
-        public async Task<Response<List<Ingredient>>> GetIngredientsForCourseAsync(Guid id)
+        public async Task<Response<IEnumerable<Ingredient>>> GetIngredientsForCourseAsync(Guid id)
         {
             var existingCourse = await coursesRepository.GetCourseAsync(id);
 
             if (existingCourse == null)
             {
-                return new Response<List<Ingredient>>(HttpStatusCode.NotFound, $"Course with id:{id} not found");
+                return new Response<IEnumerable<Ingredient>>(HttpStatusCode.NotFound, $"Course with id:{id} not found");
             }
 
             var ingredients = existingCourse.Ingredients;
 
-            return new Response<List<Ingredient>>(HttpStatusCode.OK, ingredients);
+            return new Response<IEnumerable<Ingredient>>(HttpStatusCode.OK, ingredients);
         }
     }
 }

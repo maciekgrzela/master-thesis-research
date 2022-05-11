@@ -36,10 +36,10 @@ namespace Application.Services
             return new Response<Customer>(HttpStatusCode.NoContent, existingCustomer);
         }
 
-        public async Task<Response<List<Customer>>> GetAllAsync()
+        public async Task<Response<IEnumerable<Customer>>> GetAllAsync()
         {
             var customers = await customerRepository.GetAllAsync();
-            return new Response<List<Customer>>(HttpStatusCode.OK, customers);
+            return new Response<IEnumerable<Customer>>(HttpStatusCode.OK, customers);
         }
 
         public async Task<Response<Customer>> GetAsync(Guid id)

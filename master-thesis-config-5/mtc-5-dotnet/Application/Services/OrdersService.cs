@@ -70,27 +70,27 @@ namespace Application.Services
             return new Response<Order>(HttpStatusCode.OK, order);
         }
 
-        public async Task<Response<List<Order>>> GetTableOrdersAsync(Guid id)
+        public async Task<Response<IEnumerable<Order>>> GetTableOrdersAsync(Guid id)
         {
             var table = await tableRepository.GetAsync(id);
             if (table == null)
             {
-                return new Response<List<Order>>(HttpStatusCode.NotFound, $"Table with id:{id} not found");
+                return new Response<IEnumerable<Order>>(HttpStatusCode.NotFound, $"Table with id:{id} not found");
             }
 
-            return new Response<List<Order>>(HttpStatusCode.OK, table.Orders);
+            return new Response<IEnumerable<Order>>(HttpStatusCode.OK, table.Orders);
         }
 
-        public async Task<Response<List<Order>>> GetUserOrdersAsync(string id)
+        public async Task<Response<IEnumerable<Order>>> GetUserOrdersAsync(string id)
         {
             var orders = await orderRepository.GetUserOrdersAsync(id);
-            return new Response<List<Order>>(HttpStatusCode.OK, orders);
+            return new Response<IEnumerable<Order>>(HttpStatusCode.OK, orders);
         }
 
-        public async Task<Response<List<Order>>> ListAsync()
+        public async Task<Response<IEnumerable<Order>>> ListAsync()
         {
             var orders = await orderRepository.ListAsync();
-            return new Response<List<Order>>(HttpStatusCode.OK, orders);
+            return new Response<IEnumerable<Order>>(HttpStatusCode.OK, orders);
         }
 
         public async Task<Response<Order>> ModifyStatusAsync(Order order, StatusNameEnum status, string note)
@@ -185,7 +185,7 @@ namespace Application.Services
                 var statusEntryForOrderedCourse = new StatusEntry()
                 {
                     Id = Guid.NewGuid(),
-                    Note = String.Empty,
+                    Note = string.Empty,
                     Status = createdStatusForOrderedCourse,
                     OrderedCourseId = ordered.Id,
                     Created = DateTime.Now

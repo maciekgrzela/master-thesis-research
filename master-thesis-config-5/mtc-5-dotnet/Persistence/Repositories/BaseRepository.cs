@@ -4,9 +4,9 @@ namespace Persistence.Repositories
 {
     public abstract class BaseRepository
     {
-        protected readonly DataContext context;
+        protected readonly DataReadContext context;
         
-        public BaseRepository(DataContext context)
+        public BaseRepository(DataReadContext context)
         {
             this.context = context;
         }

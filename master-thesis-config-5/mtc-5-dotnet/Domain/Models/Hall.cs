@@ -15,8 +15,9 @@ namespace Domain.Models
         [Required, Range(0, Int32.MaxValue)]
         public int ColumnNumber { get; set; }
 
-        public List<Table> Tables { get; set; }
+        public virtual IEnumerable<Table> Tables { get; set; }
 
+        [MaxLength(2000)]
         public string Description { get; set; }
     }
 }

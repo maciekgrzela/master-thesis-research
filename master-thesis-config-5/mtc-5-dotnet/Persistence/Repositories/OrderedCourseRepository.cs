@@ -11,9 +11,9 @@ namespace Persistence.Repositories
 {
     public class OrderedCourseRepository : BaseRepository, IOrderedCourseRepository
     {
-        public OrderedCourseRepository(DataContext context) : base(context) {}
+        public OrderedCourseRepository(DataReadContext context) : base(context) {}
 
-        public async Task<List<OrderedCourse>> ListAsync()
+        public async Task<IEnumerable<OrderedCourse>> ListAsync()
         {
             return await context.OrderedCourses
             .Include(p => p.Course)
@@ -26,7 +26,7 @@ namespace Persistence.Repositories
             .ToListAsync();
         }
 
-        public async Task<List<OrderedCourse>> GetCoursesForBillId(Guid id)
+        public async Task<IEnumerable<OrderedCourse>> GetCoursesForBillId(Guid id)
         {
             return await context.OrderedCourses
             .Include(p => p.Course)

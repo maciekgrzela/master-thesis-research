@@ -9,7 +9,7 @@ namespace Application.Services.Interfaces
 {
     public interface IHallService
     {
-        Task<Response<List<Hall>>> GetAllAsync();
+        Task<Response<IEnumerable<Hall>>> GetAllAsync();
 
         Task<Response<Hall>> GetAsync(Guid id);
 

@@ -11,7 +11,7 @@ namespace Application.Services.Interfaces
 {
     public interface IProductsService
     {
-        Task<Response<List<Product>>> ListAsync();
+        Task<Response<IEnumerable<Product>>> ListAsync();
 
         Task<Response<Product>> GetProductAsync(Guid id);
 

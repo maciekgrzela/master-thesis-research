@@ -33,9 +33,9 @@ namespace API.Controllers
                 return GenerateResponse<string>(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<Reservation>, List<ReservationResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<Reservation>, IEnumerable<ReservationResource>>(result.Type);
 
-            return GenerateResponse<List<ReservationResource>>(result.Status, responseBody);
+            return GenerateResponse<IEnumerable<ReservationResource>>(result.Status, responseBody);
         }
 
         [HttpGet("{id}")]

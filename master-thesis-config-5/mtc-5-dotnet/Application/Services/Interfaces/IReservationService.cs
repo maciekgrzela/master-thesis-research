@@ -9,9 +9,9 @@ namespace Application.Services.Interfaces
 {
     public interface IReservationService
     {
-        Task<Response<List<Reservation>>> GetAllAsync();
+        Task<Response<IEnumerable<Reservation>>> GetAllAsync();
 
-        Task<Response<List<Reservation>>> SearchByTableAsync(Guid tableId);
+        Task<Response<IEnumerable<Reservation>>> SearchByTableAsync(Guid tableId);
 
         Task<Response<Reservation>> GetAsync(Guid id);
 

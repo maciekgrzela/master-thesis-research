@@ -9,9 +9,9 @@ namespace Application.Services.Interfaces
 {
     public interface IOrderedCourseService
     {
-         Task<Response<List<OrderedCourse>>> ListAsync();
+         Task<Response<IEnumerable<OrderedCourse>>> ListAsync();
          Task<Response<OrderedCourse>> GetOrderedCourseAsync(Guid id);
-         Task<Response<OrderedCourse>> SaveAsync(List<OrderedCourse> orderedCourses);
+         Task<Response<OrderedCourse>> SaveAsync(IEnumerable<OrderedCourse> orderedCourses);
          Task<Response<OrderedCourse>> ModifyStatusAsync(OrderedCourse orderedCourse, StatusNameEnum status, string note);
          Task<Response<OrderedCourse>> UpdateAsync(Guid id, OrderedCourse orderedCourse);
          Task<Response<OrderedCourse>> UpdateStatusAsync(Guid orderedCourseId, string statusName);

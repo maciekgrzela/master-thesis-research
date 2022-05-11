@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.CQRS.Courses;
-using Application.Resources.Course.Save;
 using Application.Responses;
-using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -23,10 +19,10 @@ namespace Application.CQRS.Reservations
 
         public class Handler : IRequestHandler<Command, Response<Unit>>
         {
-            private readonly DataContext _context;
+            private readonly DataReadContext _context;
             private readonly IUnitOfWork _unitOfWork;
 
-            public Handler(DataContext context, IUnitOfWork unitOfWork)
+            public Handler(DataReadContext context, IUnitOfWork unitOfWork)
             {
                 _context = context;
                 _unitOfWork = unitOfWork;

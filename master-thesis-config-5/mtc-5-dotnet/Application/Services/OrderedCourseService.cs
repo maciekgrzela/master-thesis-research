@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Application.Responses;
@@ -57,10 +58,10 @@ namespace Application.Services
             return new Response<OrderedCourse>(HttpStatusCode.OK, existingOrderedCourse);
         }
 
-        public async Task<Response<List<OrderedCourse>>> ListAsync()
+        public async Task<Response<IEnumerable<OrderedCourse>>> ListAsync()
         {
             var orderedCourses = await orderedCourseRepository.ListAsync();
-            return new Response<List<OrderedCourse>>(HttpStatusCode.OK, orderedCourses);
+            return new Response<IEnumerable<OrderedCourse>>(HttpStatusCode.OK, orderedCourses);
         }
 
         public async Task<Response<OrderedCourse>> ModifyStatusAsync(OrderedCourse orderedCourse, StatusNameEnum status, string note)
@@ -78,7 +79,7 @@ namespace Application.Services
                 Status = statusForOrderedCourse,
                 OrderedCourse = orderedCourse,
                 Created = DateTime.Now,
-                Note = note == null ? String.Empty : note
+                Note = note ?? string.Empty
             };
 
             await statusEntriesRepository.SaveAsync(newStatusEntry);
@@ -87,7 +88,7 @@ namespace Application.Services
             return new Response<OrderedCourse>(HttpStatusCode.OK, orderedCourse);
         }
 
-        public async Task<Response<OrderedCourse>> SaveAsync(List<OrderedCourse> orderedCourses)
+        public async Task<Response<OrderedCourse>> SaveAsync(IEnumerable<OrderedCourse> orderedCourses)
         {
 
             foreach (var orderedCourse in orderedCourses)
@@ -219,7 +220,12 @@ namespace Application.Services
             };
             
             await statusEntriesRepository.SaveAsync(statusEntry);
-            existingOrder.StatusEntries.Add(statusEntry);
+
+            var ordersList = existingOrder.StatusEntries.ToList();
+            
+            ordersList.Add(statusEntry);
+            
+            existingOrder.StatusEntries = ordersList;
 
             orderRepository.Update(existingOrder);
             await unitOfWork.CommitTransactionAsync();

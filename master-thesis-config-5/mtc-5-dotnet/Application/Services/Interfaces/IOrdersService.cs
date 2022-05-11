@@ -12,16 +12,16 @@ namespace Application.Services.Interfaces
 {
     public interface IOrdersService
     {
-        Task<Response<List<Order>>> ListAsync();
+        Task<Response<IEnumerable<Order>>> ListAsync();
 
         Task<Response<Order>> GetOrderAsync(Guid id);
         Task<Response<Order>> ModifyStatusAsync(Order order, StatusNameEnum status, string note);
 
         Task<Response<Order>> GetLastTableOrderAsync(Guid id);
 
-        Task<Response<List<Order>>> GetTableOrdersAsync(Guid id);
+        Task<Response<IEnumerable<Order>>> GetTableOrdersAsync(Guid id);
 
-        Task<Response<List<Order>>> GetUserOrdersAsync(string id);
+        Task<Response<IEnumerable<Order>>> GetUserOrdersAsync(string id);
 
         Task<Response<Order>> SaveAsync(Order order);
 

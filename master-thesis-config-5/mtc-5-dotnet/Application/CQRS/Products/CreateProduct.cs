@@ -23,10 +23,10 @@ namespace Application.CQRS.Products
 
         public class Handler : IRequestHandler<Command, Response<Unit>>
         {
-            private readonly DataContext _context;
+            private readonly DataReadContext _context;
             private readonly IUnitOfWork _unitOfWork;
 
-            public Handler(DataContext context, IUnitOfWork unitOfWork)
+            public Handler(DataReadContext context, IUnitOfWork unitOfWork)
             {
                 _context = context;
                 _unitOfWork = unitOfWork;

@@ -38,10 +38,10 @@ namespace Application.Services
             return new Response<Reservation>(HttpStatusCode.NoContent, existingReservation);
         }
 
-        public async Task<Response<List<Reservation>>> GetAllAsync()
+        public async Task<Response<IEnumerable<Reservation>>> GetAllAsync()
         {
             var reservations = await reservationRepository.GetAllAsync();
-            return new Response<List<Reservation>>(HttpStatusCode.OK, reservations);
+            return new Response<IEnumerable<Reservation>>(HttpStatusCode.OK, reservations);
         }
 
         public async Task<Response<Reservation>> GetAsync(Guid id)
@@ -78,10 +78,10 @@ namespace Application.Services
             return new Response<Reservation>(HttpStatusCode.NoContent, newReservation);
         }
 
-        public async Task<Response<List<Reservation>>> SearchByTableAsync(Guid tableId)
+        public async Task<Response<IEnumerable<Reservation>>> SearchByTableAsync(Guid tableId)
         {
             var reservations = await reservationRepository.SearchByTableAsync(tableId);
-            return new Response<List<Reservation>>(HttpStatusCode.OK, reservations);
+            return new Response<IEnumerable<Reservation>>(HttpStatusCode.OK, reservations);
         }
 
         public async Task<Response<Reservation>> Update(Guid id, SaveReservationResource reservation)

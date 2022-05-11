@@ -11,9 +11,9 @@ namespace Persistence.Repositories
 {
     public class TableRepository : ITableRepository
     {
-        private readonly DataContext context;
+        private readonly DataReadContext context;
 
-        public TableRepository(DataContext context)
+        public TableRepository(DataReadContext context)
         {
             this.context = context;
         }
@@ -23,14 +23,14 @@ namespace Persistence.Repositories
             context.Tables.Remove(table);
         }
 
-        public async Task<List<Table>> GetAllAsync()
+        public async Task<IEnumerable<Table>> GetAllAsync()
         {
             return await context.Tables
                             .Include(p => p.Orders)
                             .ToListAsync();
         }
 
-        public async Task<List<Table>> GetAllForHallAsync(Guid hallId)
+        public async Task<IEnumerable<Table>> GetAllForHallAsync(Guid hallId)
         {
             return await context.Tables
                 .Where(t => t.HallId == hallId)

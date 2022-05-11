@@ -35,9 +35,9 @@ namespace API.Controllers
                 return GenerateResponse<string>(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<Course>, List<CourseResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<Course>, IEnumerable<CourseResource>>(result.Type);
 
-            return GenerateResponse<List<CourseResource>>(result.Status, responseBody);
+            return GenerateResponse<IEnumerable<CourseResource>>(result.Status, responseBody);
         }
 
         [HttpGet("{id}")]
@@ -65,9 +65,9 @@ namespace API.Controllers
                 return GenerateResponse<string>(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<Ingredient>, List<IngredientForCourseResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<Ingredient>, IEnumerable<IngredientForCourseResource>>(result.Type);
 
-            return GenerateResponse<List<IngredientForCourseResource>>(result.Status, responseBody);
+            return GenerateResponse<IEnumerable<IngredientForCourseResource>>(result.Status, responseBody);
         }
 
         [HttpPost]

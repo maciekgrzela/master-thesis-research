@@ -38,16 +38,16 @@ namespace Application.Services
             return new Response<Table>(HttpStatusCode.NoContent, existingTable);
         }
 
-        public async Task<Response<List<Table>>> GetAllAsync()
+        public async Task<Response<IEnumerable<Table>>> GetAllAsync()
         {
             var tables = await tableRepository.GetAllAsync();
-            return new Response<List<Table>>(HttpStatusCode.OK, tables);
+            return new Response<IEnumerable<Table>>(HttpStatusCode.OK, tables);
         }
 
-        public async Task<Response<List<Table>>> GetAllForHallAsync(Guid hallId)
+        public async Task<Response<IEnumerable<Table>>> GetAllForHallAsync(Guid hallId)
         {
             var tables = await tableRepository.GetAllForHallAsync(hallId);
-            return new Response<List<Table>>(HttpStatusCode.OK, tables);
+            return new Response<IEnumerable<Table>>(HttpStatusCode.OK, tables);
         }
 
         public async Task<Response<Table>> GetAsync(Guid id)

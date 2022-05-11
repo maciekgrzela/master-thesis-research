@@ -8,7 +8,7 @@ namespace Application.Services.Interfaces
 {
     public interface IIngredientService
     {
-        Task<Response<List<Ingredient>>> ListAsync();
+        Task<Response<IEnumerable<Ingredient>>> ListAsync();
         Task<Response<Ingredient>> GetIngredientAsync(Guid id);
         Task<Response<Ingredient>> SaveAsync(Ingredient ingredient);
         Task<Response<Ingredient>> UpdateAsync(Guid id, Ingredient ingredient);

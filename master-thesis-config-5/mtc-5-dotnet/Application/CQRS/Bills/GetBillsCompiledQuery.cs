@@ -8,8 +8,8 @@ namespace Application.CQRS.Bills
 {
     public static class GetBillsCompiledQuery
     {
-        public static readonly Func<DataContext, IQueryable<Bill>> BillsCompiledQuery
-            = EF.CompileQuery<DataContext, IQueryable<Bill>>(
+        public static readonly Func<DataReadContext, IQueryable<Bill>> BillsCompiledQuery
+            = EF.CompileQuery<DataReadContext, IQueryable<Bill>>(
                 context => context.Bills
                     .Include(p => p.Customer)
                     .Include(p => p.Order)

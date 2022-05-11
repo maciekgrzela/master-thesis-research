@@ -8,7 +8,7 @@ namespace Persistence.Repositories.Interfaces
 {
     public interface IBillRepository
     {
-        Task<List<Bill>> ListAsync();
+        Task<IEnumerable<Bill>> ListAsync();
         IQueryable<Bill> QueryableAsync();
         Task<Bill> GetBillAsync(Guid id);
         Task SaveAsync(Bill bill);

@@ -10,7 +10,7 @@ namespace Persistence.Repositories
 {
     public class IngredientRepository : BaseRepository, IIngredientRepository
     {
-        public IngredientRepository(DataContext context) : base(context) {}
+        public IngredientRepository(DataReadContext context) : base(context) {}
 
         public void Delete(Ingredient ingredient)
         {
@@ -25,7 +25,7 @@ namespace Persistence.Repositories
             .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<Ingredient>> ListAsync()
+        public async Task<IEnumerable<Ingredient>> ListAsync()
         {
             return await context.Ingredients
             .Include(p => p.Product)
@@ -38,7 +38,7 @@ namespace Persistence.Repositories
             await context.Ingredients.AddAsync(ingredient);
         }
 
-        public async Task SaveRangeAsync(List<Ingredient> ingredients)
+        public async Task SaveRangeAsync(IEnumerable<Ingredient> ingredients)
         {
             await context.Ingredients.AddRangeAsync(ingredients);
         }

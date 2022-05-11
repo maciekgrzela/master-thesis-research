@@ -36,9 +36,9 @@ namespace API.Controllers
                 return GenerateResponse<string>(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<Hall>, List<HallResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<Hall>, IEnumerable<HallResource>>(result.Type);
 
-            return GenerateResponse<List<HallResource>>(result.Status, responseBody);
+            return GenerateResponse<IEnumerable<HallResource>>(result.Status, responseBody);
         }
 
         [HttpGet("{id}")]
@@ -66,9 +66,9 @@ namespace API.Controllers
                 return GenerateResponse<string>(result.Status, result.Message);
             }
 
-            var responseBody = mapper.Map<List<Table>, List<TableForHallResource>>(result.Type);
+            var responseBody = mapper.Map<IEnumerable<Table>, IEnumerable<TableForHallResource>>(result.Type);
 
-            return GenerateResponse<List<TableForHallResource>>(result.Status, responseBody);
+            return GenerateResponse<IEnumerable<TableForHallResource>>(result.Status, responseBody);
         }
 
         [HttpPost]

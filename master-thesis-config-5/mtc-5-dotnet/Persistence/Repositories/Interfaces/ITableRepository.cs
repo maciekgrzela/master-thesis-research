@@ -7,9 +7,9 @@ namespace Persistence.Repositories.Interfaces
 {
     public interface ITableRepository
     {
-        Task<List<Table>> GetAllAsync();
+        Task<IEnumerable<Table>> GetAllAsync();
 
-        Task<List<Table>> GetAllForHallAsync(Guid hallId);
+        Task<IEnumerable<Table>> GetAllForHallAsync(Guid hallId);
 
         Task<Table> GetAsync(Guid id);
 

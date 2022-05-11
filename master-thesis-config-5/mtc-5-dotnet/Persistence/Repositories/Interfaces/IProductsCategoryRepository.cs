@@ -7,7 +7,7 @@ namespace Persistence.Repositories.Interfaces
 {
     public interface IProductsCategoryRepository
     {
-        Task<List<ProductsCategory>> ListAsync();
+        Task<IEnumerable<ProductsCategory>> ListAsync();
         Task<ProductsCategory> GetProductsCategoryAsync(Guid id);
         Task SaveAsync(ProductsCategory category);
         void Update(ProductsCategory category);

@@ -36,10 +36,10 @@ namespace Application.Services
             return new Response<Product>(HttpStatusCode.OK, product);
         }
 
-        public async Task<Response<List<Product>>> ListAsync()
+        public async Task<Response<IEnumerable<Product>>> ListAsync()
         {
             var products = await productRepository.ListAsync();
-            return new Response<List<Product>>(HttpStatusCode.OK, products);
+            return new Response<IEnumerable<Product>>(HttpStatusCode.OK, products);
         }
 
         public async Task<Response<Product>> SaveAsync(SaveProductResource product)

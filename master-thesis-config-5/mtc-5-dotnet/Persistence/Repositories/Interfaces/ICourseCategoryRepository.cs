@@ -7,7 +7,7 @@ namespace Persistence.Repositories.Interfaces
 {
     public interface ICourseCategoryRepository
     {
-        Task<List<CoursesCategory>> ListAsync();
+        Task<IEnumerable<CoursesCategory>> ListAsync();
         Task<CoursesCategory> GetCoursesCategoryAsync(Guid id);
         Task SaveAsync(CoursesCategory category);
         void Update(CoursesCategory category);

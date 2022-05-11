@@ -16,12 +16,12 @@ namespace Domain.Models
         public virtual Order Order { get; set; }
         public Guid? BillId { get; set; }
         public virtual Bill Bill { get; set; }
-        [Required, Range(1, Int32.MaxValue)]
+        [Required, Range(1, int.MaxValue)]
         public int Quantity { get; set; }
-        [Range(0, Int32.MaxValue)]
+        [Range(0, int.MaxValue)]
         public int? BillQuantity { get; set; }
-        [Required, Range(0, Int32.MaxValue)]
+        [Required, Range(0, int.MaxValue)]
         public int PercentageDiscount { get; set; }
-        public virtual List<StatusEntry> StatusEntries { get; set; }
+        public virtual IEnumerable<StatusEntry> StatusEntries { get; set; }
     }
 }

@@ -210,18 +210,18 @@ namespace Application.Services
             return new Response<Bill>(HttpStatusCode.NoContent, existingBill);
         }
 
-        public async Task<Response<List<OrderedCourse>>> GetOrderedCourseForBillAsync(Guid id)
+        public async Task<Response<IEnumerable<OrderedCourse>>> GetOrderedCourseForBillAsync(Guid id)
         {
             var existingBill = await billRepository.GetBillAsync(id);
 
             if (existingBill == null)
             {
-                return new Response<List<OrderedCourse>>(HttpStatusCode.NotFound, $"Bill with id:{id} not found");
+                return new Response<IEnumerable<OrderedCourse>>(HttpStatusCode.NotFound, $"Bill with id:{id} not found");
             }
 
             var courses = await orderedCourseRepository.GetCoursesForBillId(id);
 
-            return new Response<List<OrderedCourse>>(HttpStatusCode.OK, courses);
+            return new Response<IEnumerable<OrderedCourse>>(HttpStatusCode.OK, courses);
         }
     }
 }

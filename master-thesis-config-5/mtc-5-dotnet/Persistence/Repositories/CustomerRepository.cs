@@ -10,9 +10,9 @@ namespace Persistence.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private readonly DataContext context;
+        private readonly DataReadContext context;
 
-        public CustomerRepository(DataContext context)
+        public CustomerRepository(DataReadContext context)
         {
             this.context = context;
         }
@@ -22,7 +22,7 @@ namespace Persistence.Repositories
             context.Customers.Remove(customer);
         }
 
-        public async Task<List<Customer>> GetAllAsync()
+        public async Task<IEnumerable<Customer>> GetAllAsync()
         {
             return await context.Customers.ToListAsync();
         }
