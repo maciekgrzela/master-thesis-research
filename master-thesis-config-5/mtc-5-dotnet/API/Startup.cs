@@ -43,7 +43,12 @@ namespace API
         {
             services.AddDbContextPool<DataReadContext>(opt =>
             {
-                opt.UseMySql(Configuration.GetConnectionString("MySqlConnectionString"), ServerVersion.AutoDetect(Configuration.GetConnectionString("MySqlConnectionString")));
+                opt.UseSqlServer(Configuration.GetConnectionString("SqlServerReadConnectionString"));
+            }, 1024);
+            
+            services.AddDbContextPool<DataWriteContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("SqlServerWriteConnectionString"));
             }, 1024);
 
             services.AddControllers(opt =>
@@ -69,6 +74,7 @@ namespace API
             builder.AddRoleManager<RoleManager<IdentityRole>>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.RoleType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<DataReadContext>();
+            identityBuilder.AddEntityFrameworkStores<DataWriteContext>();
             identityBuilder.AddRoles<IdentityRole>();
             identityBuilder.AddRoleManager<RoleManager<IdentityRole>>();
             identityBuilder.AddSignInManager<SignInManager<User>>();
@@ -125,7 +131,7 @@ namespace API
                                 Id = "Bearer"
                             }
                         },
-                        new string[] {}
+                        Array.Empty<string>()
                     }
                 });
                 c.CustomSchemaIds(type => type.ToString());

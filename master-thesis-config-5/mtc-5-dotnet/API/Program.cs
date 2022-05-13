@@ -25,11 +25,14 @@ namespace API
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<DataReadContext>();
+                    var readContext = services.GetRequiredService<DataReadContext>();
+                    var writeContext = services.GetRequiredService<DataWriteContext>();
                     var userManager = services.GetRequiredService<UserManager<User>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    context.Database.Migrate();
-                    Seed.SeedData(context, userManager, roleManager).Wait();
+                    readContext.Database.Migrate();
+                    writeContext.Database.Migrate();
+                    Seed.SeedData(readContext, userManager, roleManager).Wait();
+                    Seed.SeedData(writeContext, userManager, roleManager).Wait();
                 } catch (Exception e)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
