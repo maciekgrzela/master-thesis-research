@@ -14,7 +14,8 @@ const getAll = async () => {
       content: bills,
     };
   } catch (e) {
-    throw new BusinessLogicError(e.statusCode, e.content);
+    console.log(e);
+    throw new BusinessLogicError(Status.INTERNAL_ERROR, e.content);
   }
 };
 
