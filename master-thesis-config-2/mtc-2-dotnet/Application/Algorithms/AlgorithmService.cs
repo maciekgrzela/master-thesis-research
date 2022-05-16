@@ -25,6 +25,7 @@ namespace Application.Algorithms
 
             var thread = new Thread(roadPlanThread.Run);
             
+            thread.IsBackground = true;
             thread.Start();
             thread.Join();
             
