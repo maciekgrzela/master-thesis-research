@@ -39,12 +39,17 @@ router.put('/:id', verifyToken, async (req, res, next) => {
   }
 });
 
-router.delete('/:id', verifyToken, async (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
+  let elapsed = 0;
+  const start = performance.now();
+
   try {
     const deletedEntity = await reservationsService.deleteById(id);
-    res.status(deletedEntity.status).json(deletedEntity.content);
+    elapsed = performance.now() - start;
+    res.status(deletedEntity.status).json([elapsed]);
   } catch (e) {
-    res.status(e.statusCode).json(e.message);
+    elapsed = performance.now() - start;
+    res.status(e.statusCode).json([elapsed]);
   }
 });
 

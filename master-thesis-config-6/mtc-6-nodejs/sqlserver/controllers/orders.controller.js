@@ -11,13 +11,17 @@ router.get('/', verifyToken, async (req, res, next) => {
   }
 });
 
-router.get('/:id', verifyToken, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
+  let elapsed = 0;
+  const start = performance.now();
   const { id } = req.params;
   try {
     const entity = await ordersService.getById(id);
-    res.status(entity.status).json(entity.content);
+    elapsed = performance.now() - start;
+    res.status(entity.status).json([elapsed]);
   } catch (e) {
-    res.status(e.statusCode).json(e.message);
+    elapsed = performance.now() - start;
+    res.status(e.statusCode).json([elapsed]);
   }
 });
 

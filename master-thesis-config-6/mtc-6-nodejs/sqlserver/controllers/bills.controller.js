@@ -2,12 +2,17 @@ const router = require('express').Router();
 const billsService = require('../services/bills.service');
 const { verifyToken } = require('../helpers/helpers');
 
-router.get('/', verifyToken, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
+  let elapsed = 0;
+  const start = performance.now();
+
   try {
     const bills = await billsService.getAll();
-    res.status(bills.status).json(bills.content);
+    elapsed = performance.now() - start;
+    res.status(bills.status).json([elapsed]);
   } catch (e) {
-    res.status(e.statusCode).json(e.message);
+    elapsed = performance.now() - start;
+    res.status(e.statusCode).json([elapsed]);
   }
 });
 

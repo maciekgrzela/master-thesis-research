@@ -40,12 +40,17 @@ router.post('/', verifyToken, async (req, res, next) => {
   }
 });
 
-router.put('/:id', verifyToken, async (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
+  let elapsed = 0;
+  const start = performance.now();
+
   try {
     const updatedEntity = await coursesService.update(id, req.body);
-    res.status(updatedEntity.status).json(updatedEntity.content);
+    elapsed = performance.now() - start;
+    res.status(updatedEntity.status).json([elapsed]);
   } catch (e) {
-    res.status(e.statusCode).json(e.message);
+    elapsed = performance.now() - start;
+    res.status(e.statusCode).json([elapsed]);
   }
 });
 
